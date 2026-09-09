@@ -1,0 +1,18 @@
+name: 🔁 Включить сайт
+description: Сайт был отключён после недели без посетителей — включаем обратно
+title: '[Включение] '
+labels: ['включить-сайт']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Сайты отключаются автоматически, если неделю не было ни одного посетителя
+        и не подключена опция продления. Включение обратно — бесплатно.
+  - type: input
+    id: slug
+    attributes:
+      label: Имя (папка) сайта
+      description: Часть ссылки после /Sites/ — например, `portfolio-fotografa`
+      placeholder: portfolio-fotografa
+    validations:
+      required: true

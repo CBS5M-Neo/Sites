@@ -1,0 +1,28 @@
+name: 🛠️ Правка сайта
+description: Изменить существующий сайт — первые 8 правок бесплатны, дальше 10 ₽
+title: '[Правка] '
+labels: ['правка']
+body:
+  - type: markdown
+    attributes:
+      value: |
+        В стоимость сайта входят **8 бесплатных правок**, каждая следующая — **10 ₽**.
+        Учёт ведётся автоматически в файле `sites.json`.
+  - type: input
+    id: slug
+    attributes:
+      label: Имя (папка) сайта
+      description: Часть ссылки после /Sites/ — например, `portfolio-fotografa`
+      placeholder: portfolio-fotografa
+    validations:
+      required: true
+  - type: textarea
+    id: instruction
+    attributes:
+      label: Что изменить
+      description: Опишите правку как можно конкретнее — что, где и как должно стать
+      placeholder: |
+        На главной замените зелёный цвет на тёмно-синий, добавьте раздел «Отзывы»
+        с тремя карточками и поменяйте телефон в подвале на +7…
+    validations:
+      required: true

@@ -1,0 +1,4 @@
+node_modules/
+.neo/
+*.log
+.DS_Store

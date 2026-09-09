@@ -1,0 +1,58 @@
+name: Neo · Включить сайт
+
+# Запускается по issue с ярлыком «включить-сайт»: возвращает отключённый сайт в строй.
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Имя папки сайта в репозитории'
+        required: true
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: neo-sites
+  cancel-in-progress: false
+
+jobs:
+  reactivate:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'включить-сайт')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Настроить git
+        run: |
+          git config user.name "neo-pipeline"
+          git config user.email "neo-pipeline@users.noreply.github.com"
+
+      - name: Определить сайт
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          SLUG=$(echo "${{ github.event.issue.body }}" | awk '/[Ии]мя \(папка\) сайта/{getline; while ($0 == "") getline; gsub(/^#|`/,""); print; exit}')
+          if [ -z "$SLUG" ]; then
+            SLUG=$(echo "${{ github.event.issue.body }}" | head -1)
+          fi
+          echo "SLUG=$SLUG" >> "$GITHUB_ENV"
+
+      - name: Включить сайт
+        run: |
+          node pipeline/reactivate.js "$SLUG" "$GITHUB_WORKSPACE" \
+            "${{ github.repository }}" "${{ github.event.issue.number || '' }}"
+
+      - name: Отправить изменения
+        run: |
+          git pull --rebase || true
+          git push

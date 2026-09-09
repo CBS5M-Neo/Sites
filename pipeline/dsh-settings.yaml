@@ -1,0 +1,16 @@
+# Настройки модели для DeepSeek Harness (используется pipeline и GitHub Actions).
+# Провайдер B.AI, модель GLM-5.3-flash. Ключ берётся из переменной окружения
+# BAI_API_KEY (локально — из credentials-сервиса DSH, в Actions — из секретов).
+agent-default-model:
+  provider: bai
+  model: glm-5.3-flash
+
+llm-pi-ai:
+  providers:
+    bai:
+      displayName: B.AI
+      apiKeyEnv: BAI_API_KEY
+      api: openai-completions
+      baseURL: https://api.b.ai/v1
+      models:
+        - id: glm-5.3-flash

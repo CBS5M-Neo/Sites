@@ -1,0 +1,84 @@
+name: Neo · Правка сайта
+
+# Запускается по issue с ярлыком «правка» либо вручную.
+# Первые 8 правок бесплатны, дальше каждая списывает 10 ₽ (учёт в sites.json).
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Имя папки сайта в репозитории (например, portfolio-fotografa)'
+        required: true
+      instruction:
+        description: 'Что изменить на сайте'
+        required: true
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency:
+  group: neo-sites
+  cancel-in-progress: false
+
+jobs:
+  edit-site:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'правка')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Настроить git
+        run: |
+          git config user.name "neo-pipeline"
+          git config user.email "neo-pipeline@users.noreply.github.com"
+
+      - name: Настроить DeepSeek Harness (GLM-5.3-flash)
+        env:
+          BAI_API_KEY_SECRET: ${{ secrets.BAI_API_KEY }}
+        run: bash pipeline/setup-dsh.sh
+
+      - name: Сохранить инструкцию
+        env:
+          INSTRUCTION: ${{ github.event_name == 'workflow_dispatch' && inputs.instruction || github.event.issue.body }}
+        run: printf '%s' "$INSTRUCTION" > /tmp/instruction.txt
+
+      - name: Определить сайт
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          # slug берём из шаблонного поля issue: строка сразу после заголовка поля
+          SLUG=$(awk '/[Ии]мя \(папка\) сайта/{getline; while ($0 == "") getline; gsub(/^#|`/,""); print; exit}' /tmp/instruction.txt | head -1)
+          if [ -z "$SLUG" ]; then
+            SLUG=$(head -1 /tmp/instruction.txt)
+          fi
+          echo "SLUG=$SLUG" >> "$GITHUB_ENV"
+
+      - name: Применить правку
+        run: |
+          node pipeline/apply-edit.js \
+            --slug "$SLUG" \
+            --instruction-file /tmp/instruction.txt \
+            --workdir "$GITHUB_WORKSPACE"
+
+      - name: Отправить изменения
+        run: |
+          git pull --rebase || true
+          git push
+
+      - name: Отчитаться в issue
+        if: github.event_name == 'issues'
+        run: |
+          gh issue comment "${{ github.event.issue.number }}" \
+            --repo "${{ github.repository }}" \
+            --body "🤖 **Neo:** правка внесена и опубликована. Проверьте сайт — обновление на GitHub Pages появляется в течение пары минут."
+        env:
+          GH_TOKEN: ${{ github.token }}

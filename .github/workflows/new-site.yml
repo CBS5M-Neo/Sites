@@ -1,0 +1,73 @@
+name: Neo · Новый сайт
+
+# Запускается по issue с ярлыком «новый-сайт» либо вручную.
+# Создаёт папку сайта в репозитории, публикует и комментирует issue.
+
+on:
+  issues:
+    types: [opened]
+  workflow_dispatch:
+    inputs:
+      request:
+        description: 'Текст заявки: что за сайт, для кого, какие разделы'
+        required: true
+      weekly_charge:
+        description: 'Списывать 20₽ за неделю без посетителей (иначе сайт отключается)'
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+
+# по одному заказу за раз, чтобы не конфликтовать в git
+concurrency:
+  group: neo-sites
+  cancel-in-progress: false
+
+jobs:
+  create-site:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      contains(github.event.issue.labels.*.name, 'новый-сайт')
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Настроить git
+        run: |
+          git config user.name "neo-pipeline"
+          git config user.email "neo-pipeline@users.noreply.github.com"
+
+      - name: Настроить DeepSeek Harness (GLM-5.3-flash)
+        env:
+          BAI_API_KEY_SECRET: ${{ secrets.BAI_API_KEY }}
+        run: bash pipeline/setup-dsh.sh
+
+      - name: Сохранить заявку
+        env:
+          REQUEST: ${{ github.event_name == 'workflow_dispatch' && inputs.request || github.event.issue.body }}
+        run: printf '%s' "$REQUEST" > /tmp/request.txt
+
+      - name: Определить настройку списания
+        if: github.event_name != 'workflow_dispatch'
+        run: |
+          if grep -Eiq '^\s*-\s*\[x\].*20 ₽' /tmp/request.txt; then
+            echo "WEEKLY=true" >> "$GITHUB_ENV"
+          else
+            echo "WEEKLY=false" >> "$GITHUB_ENV"
+          fi
+
+      - name: Создать сайт (промпт → ИИ → публикация)
+        run: |
+          node pipeline/new-site.js \
+            --request-file /tmp/request.txt \
+            --workdir "$GITHUB_WORKSPACE" \
+            --issue "${{ github.event.issue.number || '' }}" \
+            --repo "${{ github.repository }}" \
+            --weekly-charge "${{ github.event_name == 'workflow_dispatch' && inputs.weekly_charge || env.WEEKLY }}"

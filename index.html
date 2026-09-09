@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Каталог сайтов Neo</title>
+<meta name="description" content="Все сайты, созданные сервисом Neo (подкомпания CBS5M).">
+<link rel="icon" type="image/png" href="https://cbs5m-neo.github.io/logo.png">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Manrope:wght@400;600;700&display=swap&subset=cyrillic" rel="stylesheet">
+<style>
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#08080d;color:#f2f2f8;font-family:'Manrope',system-ui,sans-serif;min-height:100vh;padding:60px 24px}
+  .wrap{max-width:900px;margin:0 auto}
+  a.back{color:#9b9bb0;text-decoration:none;font-size:14px}
+  a.back:hover{color:#fff}
+  h1{font-family:'Unbounded';font-size:clamp(24px,4vw,36px);margin:18px 0 8px}
+  .sub{color:#9b9bb0;margin-bottom:40px}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:18px}
+  .card{display:block;background:#12121d;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px;text-decoration:none;color:inherit;transition:transform .2s,border-color .2s}
+  .card:hover{transform:translateY(-4px);border-color:rgba(124,92,255,.5)}
+  .card .emoji{font-size:30px}
+  .card h2{font-size:16px;margin:12px 0 6px;font-weight:700}
+  .card p{font-size:13px;color:#9b9bb0;line-height:1.5}
+  .card .meta{margin-top:14px;font-size:12px;color:#6d6d85}
+  .card .badge{display:inline-block;font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;margin-left:8px;vertical-align:middle}
+  .badge.on{background:rgba(34,211,238,.15);color:#67e8f9}
+  .badge.off{background:rgba(255,90,90,.15);color:#fca5a5}
+  .empty{border:1px dashed rgba(255,255,255,.15);border-radius:16px;padding:60px 24px;text-align:center;color:#9b9bb0}
+  .empty a{color:#c9bcff;font-weight:700;text-decoration:none}
+  footer{margin-top:50px;text-align:center;color:#6d6d85;font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <a class="back" href="https://cbs5m-neo.github.io/">← На главную Neo</a>
+  <h1>Каталог сайтов Neo</h1>
+  <p class="sub">Все сайты, созданные сервисом Neo · подкомпания CBS5M</p>
+  <div class="grid" id="grid"></div>
+  <footer>Список формируется автоматически из <a href="https://github.com/CBS5M-Neo/Sites" style="color:#9b9bb0">sites.json</a></footer>
+</div>
+<script>
+(async () => {
+  const grid = document.getElementById('grid');
+  try {
+    const r = await fetch('sites.json', {cache: 'no-store'});
+    const reg = await r.json();
+    const sites = (reg.sites || []);
+    if (!sites.length) throw 0;
+    grid.innerHTML = '';
+    for (const s of sites) {
+      const a = document.createElement('a');
+      a.className = 'card';
+      a.href = s.url;
+      a.target = '_blank'; a.rel = 'noopener';
+      const off = s.status === 'suspended';
+      a.innerHTML =
+        '<div class="emoji">' + (s.emoji || '🌐') + '</div>' +
+        '<h2></h2>' +
+        '<p></p>' +
+        '<div class="meta">создан ' + (s.createdAt || '—') +
+        ' · <span class="badge ' + (off ? 'off">отключён' : 'on">активен') + '</span></div>';
+      a.querySelector('h2').textContent = s.name || s.slug;
+      a.querySelector('p').textContent = s.description || '';
+      grid.appendChild(a);
+    }
+  } catch (e) {
+    grid.innerHTML = '<div class="empty">Пока нет ни одного сайта.<br>Будьте первым — ' +
+      '<a href="https://github.com/CBS5M-Neo/Sites/issues/new?template=new-site.yml">закажите сайт за 100 ₽</a></div>';
+  }
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,5 @@
+# Патч для dsh --profile headless: задаёт модель по умолчанию так же,
+# как её задаёт Ollama-лаунчер для веб-профиля (провайдер B.AI, glm-5.3-flash).
+- config:
+    path: C:\Users\User\.ollama\launch\dsh\settings.yaml
+  id: settings

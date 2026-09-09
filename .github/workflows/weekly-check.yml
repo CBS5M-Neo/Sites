@@ -1,0 +1,54 @@
+name: Neo · Еженедельная проверка
+
+# Раз в неделю: проверка посещаемости сайтов.
+# Не было посетителей:
+#   • включено списание → −20 ₽ (при долгe сайт отключается);
+#   • выключено → сайт сразу отключается.
+# Работает по CSV от Google Apps Script (VISITS_CSV_URL) либо по данным sites.json.
+
+on:
+  schedule:
+    - cron: '0 6 * * 1'   # каждый понедельник 06:00 UTC
+  workflow_dispatch:
+    inputs:
+      visits_csv:
+        description: 'Ссылка на CSV (slug,visits). Пусто — использовать данные sites.json'
+        required: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: neo-sites
+  cancel-in-progress: false
+
+jobs:
+  weekly-check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Настроить git
+        run: |
+          git config user.name "neo-pipeline"
+          git config user.email "neo-pipeline@users.noreply.github.com"
+
+      - name: Еженедельная проверка посещаемости
+        env:
+          VISITS_CSV: ${{ inputs.visits_csv || secrets.VISITS_CSV_URL }}
+        run: |
+          if [ -n "$VISITS_CSV" ]; then
+            node pipeline/weekly-check.js --workdir "$GITHUB_WORKSPACE" --visits-csv "$VISITS_CSV"
+          else
+            node pipeline/weekly-check.js --workdir "$GITHUB_WORKSPACE"
+          fi
+
+      - name: Отправить изменения
+        run: |
+          git pull --rebase || true
+          git push
