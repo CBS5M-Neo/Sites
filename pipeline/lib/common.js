@@ -56,6 +56,27 @@ function git(repoDir, args) {
 
 /* ------------------------- DeepSeek Harness -------------------------- */
 /**
+ * Определяет, как запускать dsh: на Windows глобальный dsh — это .cmd-шим,
+ * который spawnSync без shell не находит, поэтому запускаем bin.js через node.
+ */
+function dshCommand(args) {
+  const bin = process.env.DSH_BIN;
+  if (bin) {
+    if (/\.c?js$/i.test(bin)) return {cmd: process.execPath, args: [bin, ...args]};
+    return {cmd: bin, args};
+  }
+  if (process.platform === 'win32') {
+    const candidates = [
+      path.join(path.dirname(process.execPath), 'node_modules', '@deepseek-ai', 'dsh', 'lib', 'bin.js'),
+      path.join(process.env.APPDATA || '', 'npm', 'node_modules', '@deepseek-ai', 'dsh', 'lib', 'bin.js')
+    ];
+    const found = candidates.find(c => fs.existsSync(c));
+    if (found) return {cmd: process.execPath, args: [found, ...args]};
+  }
+  return {cmd: 'dsh', args};
+}
+
+/**
  * Один запрос к модели через DeepSeek Harness (headless-профиль).
  * Модель по умолчанию — GLM-5.3-flash (провайдер bai, задаётся патчем/ENV).
  */
@@ -66,7 +87,8 @@ function askDsh(prompt, {timeoutMs = 15 * 60_000, workdir} = {}) {
   args.push(prompt);
 
   log(`dsh headless → ${process.env.DSH_MODEL || 'glm-5.3-flash'} …`);
-  const r = sh('dsh', args, {timeout: timeoutMs, cwd: workdir || process.cwd()});
+  const {cmd, args: finalArgs} = dshCommand(args);
+  const r = sh(cmd, finalArgs, {timeout: timeoutMs, cwd: workdir || process.cwd()});
   if (r.code !== 0) {
     throw new Error(`dsh exited with code ${r.code}\n${r.stderr}\n${r.stdout.slice(0, 2000)}`);
   }
