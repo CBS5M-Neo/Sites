@@ -1,4 +1,19 @@
 {
   "version": 1,
-  "sites": []
+  "sites": [
+    {
+      "slug": "kofeynya-uyut",
+      "name": "Кофейня «Уют»",
+      "description": "Одностраничный сайт-визитка семейной кофейни в Казани: меню, часы работы, бронирование столиков.",
+      "url": "https://cbs5m-neo.github.io/Sites/kofeynya-uyut/",
+      "createdAt": "2026-09-09",
+      "status": "active",
+      "weeklyCharge": false,
+      "visits": 0,
+      "lastWeeklyCheck": null,
+      "balance": 0,
+      "edits": [],
+      "issue": null
+    }
+  ]
 }
