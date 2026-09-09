@@ -1,7 +1,7 @@
 name: Deploy Pages · Sites
 
 # Публикует каталог сайтов и сами сайты на GitHub Pages.
-# Включите в настройках репозитория: Settings → Pages → Source: GitHub Actions.
+# Pages включается автоматически (configure-pages: enablement).
 
 on:
   push:
@@ -12,7 +12,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
-  administration: write   # для configure-pages с enablement: true (автовключение Pages)
+  administration: write   # для configure-pages с enablement: true
 
 concurrency:
   group: pages
@@ -30,10 +30,14 @@ jobs:
       - name: Собрать статические файлы (без служебных папок)
         run: |
           mkdir -p _pages
-          cp -r ./* _pages/ 2>/dev/null || true
-          rm -rf _pages/pipeline _pages/.github _pages/docs _pages/tools _pages/scripts
-          rm -f _pages/.gitignore _pages/_pages -r
-          mkdir -p _pages/.nojekyll
+          find . -mindepth 1 -maxdepth 1 \
+            ! -name '_pages' ! -name '.git' ! -name 'pipeline' \
+            ! -name 'docs' ! -name '.github' \
+            -exec cp -r {} _pages/ \;
+          rm -f _pages/.gitignore
+          touch _pages/.nojekyll
+          echo "--- _pages ---"
+          ls -A _pages
 
       - uses: actions/configure-pages@v5
         with:
