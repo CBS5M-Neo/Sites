@@ -106,7 +106,8 @@ Sites/
 
 ## Настройка (для владельца)
 
-1. **GitHub Pages** — в этом репозитории: Settings → Pages → Source → **GitHub Actions**.
+1. **GitHub Pages** — включается автоматически при первом запуске workflow `pages.yml`
+   (push в `main`); адрес каталога: <https://cbs5m-neo.github.io/Sites/>.
 2. **Секрет `BAI_API_KEY`** — Settings → Secrets and variables → Actions → New secret:
    ключ провайдера B.AI для модели GLM-5.3-flash.
 3. (Необязательно) **Счётчик посещений** — см. [docs/SYSTEM.md](docs/SYSTEM.md),

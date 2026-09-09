@@ -12,6 +12,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  administration: write   # для configure-pages с enablement: true (автовключение Pages)
 
 concurrency:
   group: pages
@@ -35,6 +36,8 @@ jobs:
           mkdir -p _pages/.nojekyll
 
       - uses: actions/configure-pages@v5
+        with:
+          enablement: true   # включить Pages, если ещё не включён
 
       - uses: actions/upload-pages-artifact@v3
         with:
