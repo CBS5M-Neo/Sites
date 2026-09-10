@@ -14,6 +14,20 @@
       "balance": 0,
       "edits": [],
       "issue": null
+    },
+    {
+      "slug": "cbs5m-kompyuternye-kursy",
+      "name": "CBS5M — компьютерные курсы",
+      "description": "Одностраничный сайт-визитка школы программирования для подростков в Новосибирске: три направления курсов, расписание, два преподавателя, отзывы и запись на пробный урок через mailto — в тёмно-синем технологичном стиле с оранжевыми акцентами и крупной типографикой.",
+      "url": "https://cbs5m-neo.github.io/Sites/cbs5m-kompyuternye-kursy/",
+      "createdAt": "2026-09-10",
+      "status": "active",
+      "weeklyCharge": false,
+      "visits": 0,
+      "lastWeeklyCheck": null,
+      "balance": 0,
+      "edits": [],
+      "issue": null
     }
   ]
 }

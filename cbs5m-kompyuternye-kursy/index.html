@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CBS5M — компьютерные курсы для подростков в Новосибирске</title>
+<meta name="description" content="Школа программирования CBS5M в Новосибирске: курсы Python, веб-разработки и олимпиадного программирования для школьников 10–17 лет. Маленькие группы, практика и проекты с первого урока, бесплатное пробное занятие.">
+<meta name="keywords" content="компьютерные курсы Новосибирск, программирование для подростков, курсы Python для детей, веб-разработка для школьников, олимпиадное программирование, школа программирования CBS5M">
+<meta name="author" content="CBS5M">
+<meta name="robots" content="index, follow">
+<meta name="theme-color" content="#0B1B33">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="CBS5M — компьютерные курсы">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="CBS5M — компьютерные курсы для подростков в Новосибирске">
+<meta property="og:description" content="Программирование для школьников 10–17 лет: Python, веб-разработка, олимпиады. Группы до 8 человек, проекты с первого урока. Первый урок — бесплатный.">
+<meta property="og:url" content="https://cbs5m.ru/">
+<meta property="og:image" content="https://picsum.photos/seed/cbs5m-courses/1200/630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="CBS5M — компьютерные курсы для подростков в Новосибирске">
+<meta name="twitter:description" content="Python, веб-разработка и олимпиадное программирование для школьников 10–17 лет. Пробный урок бесплатно.">
+<meta name="twitter:image" content="https://picsum.photos/seed/cbs5m-courses/1200/630">
+<link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2064%2064'%3E%3Crect%20width='64'%20height='64'%20rx='14'%20fill='%230B1B33'/%3E%3Ctext%20x='32'%20y='43'%20font-family='Arial,sans-serif'%20font-size='30'%20font-weight='bold'%20fill='%23FF7A1A'%20text-anchor='middle'%3EC5%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Unbounded:wght@400;500;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0B1B33;
+  --bg2:#102A4C;
+  --card:#14335C;
+  --accent:#FF7A1A;
+  --blue:#4FC3F7;
+  --text:#EAF1FA;
+  --muted:#9FB4CC;
+  --line:rgba(79,195,247,.16);
+  --shadow:0 18px 44px rgba(2,8,20,.5);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:96px}
+body{
+  margin:0;
+  font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif;
+  font-size:17px;
+  line-height:1.65;
+  color:var(--text);
+  background:var(--bg);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,.num,.logo-mark,.btn,.big-phone{font-family:'Unbounded','Manrope',system-ui,sans-serif}
+img,svg{display:block;max-width:100%}
+a{color:var(--blue)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.container{max-width:1180px;margin:0 auto;padding:0 24px}
+.accent{color:var(--accent)}
+.blue{color:var(--blue)}
+
+/* ---------- Кнопки ---------- */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-size:.82rem;font-weight:700;letter-spacing:.02em;text-transform:none;
+  text-decoration:none;border-radius:12px;padding:15px 26px;border:1px solid transparent;
+  cursor:pointer;transition:transform .25s ease,box-shadow .25s ease,background .25s ease,border-color .25s ease,color .25s ease;
+  white-space:nowrap;
+}
+.btn-primary{background:var(--accent);color:#0B1B33;box-shadow:0 10px 26px rgba(255,122,26,.28)}
+.btn-primary:hover{transform:translateY(-2px);box-shadow:0 16px 34px rgba(255,122,26,.42);background:#ff8b3a}
+.btn-ghost{background:transparent;border-color:var(--line);color:var(--blue)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent);transform:translateY(-2px)}
+.btn-small{padding:11px 18px;font-size:.74rem}
+.btn-block{width:100%;margin-top:auto}
+
+/* ---------- Шапка ---------- */
+.site-header{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,27,51,.82);
+  -webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(79,195,247,.14);
+  transition:box-shadow .3s ease,background .3s ease;
+}
+.site-header.scrolled{box-shadow:0 12px 32px rgba(2,8,20,.5);background:rgba(11,27,51,.92)}
+.header-inner{display:flex;align-items:center;justify-content:space-between;gap:28px;height:76px}
+.logo{display:flex;align-items:center;gap:12px;text-decoration:none;color:var(--text)}
+.logo-mark{
+  font-size:.95rem;font-weight:800;letter-spacing:.05em;color:var(--accent);
+  border:2px solid var(--accent);border-radius:11px;padding:7px 11px;line-height:1;
+}
+.logo-caption{font-size:.6rem;line-height:1.35;text-transform:uppercase;letter-spacing:.16em;color:var(--muted);font-weight:700}
+.main-nav{display:flex;gap:28px}
+.main-nav a{
+  position:relative;color:var(--muted);text-decoration:none;font-weight:600;font-size:.95rem;
+  padding:6px 0;transition:color .25s ease;
+}
+.main-nav a::after{
+  content:"";position:absolute;left:0;right:100%;bottom:0;height:2px;background:var(--accent);
+  transition:right .3s ease;border-radius:2px;
+}
+.main-nav a:hover{color:var(--text)}
+.main-nav a.active{color:var(--text)}
+.main-nav a.active::after,.main-nav a:hover::after{right:0}
+.header-cta{display:flex;align-items:center;gap:14px}
+.burger{
+  display:none;flex-direction:column;justify-content:center;gap:5px;
+  width:46px;height:46px;padding:10px;background:transparent;
+  border:1px solid var(--line);border-radius:11px;cursor:pointer;
+}
+.burger span{display:block;height:2px;width:100%;background:var(--text);border-radius:2px;transition:transform .3s ease,opacity .3s ease}
+.nav-open .burger{border-color:var(--accent)}
+.nav-open .burger span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+.nav-open .burger span:nth-child(2){opacity:0}
+.nav-open .burger span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+.mobile-cta{display:none}
+
+/* ---------- Герой ---------- */
+.hero{position:relative;overflow:hidden;padding:168px 0 0;background:var(--bg)}
+.hero::before{
+  content:"";position:absolute;inset:-12%;
+  background-image:
+    linear-gradient(rgba(79,195,247,.06) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,195,247,.06) 1px,transparent 1px);
+  background-size:46px 46px;
+  -webkit-mask-image:radial-gradient(115% 85% at 50% 8%,#000 32%,transparent 76%);
+  mask-image:radial-gradient(115% 85% at 50% 8%,#000 32%,transparent 76%);
+}
+.hero::after{
+  content:"";position:absolute;top:-240px;right:-170px;width:660px;height:660px;pointer-events:none;
+  background:radial-gradient(circle,rgba(255,122,26,.2),transparent 62%);
+}
+.hero-inner{position:relative;z-index:1;display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center;padding-bottom:56px}
+.eyebrow{
+  display:inline-flex;align-items:center;gap:9px;margin:0 0 18px;padding:7px 14px;
+  border:1px solid var(--line);border-radius:999px;background:rgba(79,195,247,.06);
+  color:var(--muted);font-weight:700;font-size:.66rem;letter-spacing:.15em;text-transform:uppercase;
+}
+.eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 10px var(--accent)}
+.hero h1{margin:0 0 18px;font-size:clamp(2.2rem,6vw,4.5rem);font-weight:800;line-height:1.08;letter-spacing:-.01em}
+.lead{margin:0 0 22px;font-size:1.08rem;color:var(--muted);max-width:56ch}
+.hero-points{list-style:none;margin:0 0 30px;padding:0;display:flex;flex-wrap:wrap;gap:10px 22px;font-size:.93rem;font-weight:600;color:var(--text)}
+.hero-points li{display:flex;align-items:center;gap:8px}
+.hero-points svg{color:var(--accent);flex:none}
+.hero-actions{display:flex;flex-wrap:wrap;gap:14px;margin-bottom:56px}
+
+/* Терминал */
+.terminal-wrap{position:relative}
+.terminal-wrap::before{
+  content:"";position:absolute;inset:-26px;border-radius:30px;pointer-events:none;
+  background:radial-gradient(60% 55% at 72% 18%,rgba(255,122,26,.16),transparent 70%);
+}
+.terminal{
+  position:relative;background:#081426;border:1px solid var(--line);border-radius:16px;
+  box-shadow:var(--shadow),0 0 60px rgba(255,122,26,.12);overflow:hidden;
+}
+.terminal-bar{display:flex;align-items:center;gap:10px;padding:13px 16px;background:rgba(16,42,76,.65);border-bottom:1px solid var(--line)}
+.dots{display:inline-flex;gap:6px}
+.dots i{width:11px;height:11px;border-radius:50%;background:#2A4A73}
+.dots i:first-child{background:var(--accent)}
+.dots i:nth-child(2){background:var(--blue)}
+.terminal-title{font-family:ui-monospace,'SF Mono','Cascadia Mono',Consolas,monospace;font-size:.76rem;color:var(--muted)}
+pre.code{margin:0;padding:20px 18px 22px;overflow-x:auto}
+pre.code code{
+  display:block;white-space:pre;
+  font-family:ui-monospace,'SF Mono','Cascadia Mono',Consolas,monospace;
+  font-size:.84rem;line-height:1.72;color:var(--text);
+}
+.c-kw{color:var(--accent)}
+.c-fn{color:var(--text);font-weight:700}
+.c-str{color:var(--blue)}
+.c-num{color:var(--blue)}
+.c-cm{color:#6C85A5;font-style:italic}
+.c-self{color:#7E96B5}
+.c-prompt{color:var(--accent);font-weight:700}
+.cursor{display:inline-block;width:8px;height:15px;background:var(--accent);vertical-align:-2px;animation:blink 1.15s step-end infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+/* Полоса фактов */
+.facts{
+  position:relative;z-index:1;margin:0 auto;padding:28px clamp(20px,4vw,44px);max-width:1180px;
+  display:grid;grid-template-columns:repeat(4,1fr);gap:22px;
+  border:1px solid var(--line);border-radius:18px;background:rgba(16,42,76,.55);
+  box-shadow:var(--shadow);transform:translateY(46px);
+}
+.fact{text-align:center;position:relative}
+.fact+.fact::before{content:"";position:absolute;left:-11px;top:14%;bottom:14%;width:1px;background:var(--line)}
+.fact .num{font-size:clamp(1.5rem,2.6vw,2.2rem);font-weight:800;color:var(--accent);line-height:1.15}
+.fact .label{font-size:.84rem;color:var(--muted);margin-top:2px}
+
+/* ---------- Секции ---------- */
+section{padding:112px 0;position:relative}
+section[id]{scroll-margin-top:100px}
+.alt{background:var(--bg2)}
+section.alt{border-top:1px solid rgba(79,195,247,.07);border-bottom:1px solid rgba(79,195,247,.07)}
+.section-head{max-width:780px;margin:0 auto 54px;text-align:center}
+.section-head.left{margin-left:0;text-align:left}
+h2{margin:0 0 14px;font-size:clamp(2rem,3.4vw,2.8rem);font-weight:700;line-height:1.18;letter-spacing:-.01em}
+.section-sub{margin:0;color:var(--muted)}
+.icon{
+  flex:none;width:54px;height:54px;display:grid;place-items:center;border-radius:14px;
+  background:rgba(255,122,26,.1);border:1px solid rgba(255,122,26,.3);color:var(--accent);margin-bottom:18px;
+}
+.card{
+  background:var(--card);border:1px solid var(--line);border-radius:18px;padding:30px 28px;
+  box-shadow:var(--shadow);transition:transform .3s ease,border-color .3s ease,box-shadow .3s ease;
+}
+.card:hover{transform:translateY(-6px);border-color:rgba(255,122,26,.55);box-shadow:0 24px 54px rgba(2,8,20,.58),0 0 0 1px rgba(255,122,26,.18)}
+
+/* Курсы */
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.course{display:flex;flex-direction:column}
+.course h3,.adv-card h3,.teacher h3{margin:0 0 8px;font-size:1.12rem;font-weight:700;line-height:1.3}
+.card-desc{margin:0 0 16px;color:var(--muted);font-size:.93rem}
+.check-list{list-style:none;margin:0 0 18px;padding:0;display:grid;gap:9px;font-size:.92rem}
+.check-list li{display:flex;gap:9px;align-items:flex-start;color:var(--text)}
+.check-list svg{flex:none;margin-top:4px;color:var(--accent)}
+.meta-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:22px}
+.chip{font-size:.74rem;font-weight:700;color:var(--blue);background:rgba(79,195,247,.1);border:1px solid var(--line);padding:5px 11px;border-radius:999px;white-space:nowrap}
+
+/* ---------- Расписание ---------- */
+.table-wrap{border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow)}
+.schedule-table{width:100%;border-collapse:collapse;background:var(--card);font-size:.95rem}
+.schedule-table th{
+  text-align:left;padding:16px 20px;background:rgba(255,122,26,.08);color:var(--accent);
+  font-family:'Unbounded',sans-serif;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  border-bottom:1px solid var(--line);
+}
+.schedule-table td{padding:15px 20px;border-bottom:1px solid rgba(79,195,247,.09)}
+.schedule-table tbody tr:last-child td{border-bottom:none}
+.schedule-table tbody tr{transition:background .25s ease}
+.schedule-table tbody tr:hover{background:rgba(79,195,247,.06)}
+.schedule-table td:first-child{font-weight:700;color:var(--text)}
+.schedule-table td:nth-child(2){color:var(--blue);font-weight:600}
+.schedule-table td:nth-child(3){font-weight:700;font-family:ui-monospace,Consolas,monospace;color:var(--text)}
+.schedule-table td:nth-child(4){color:var(--muted)}
+.note-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+.note-pill{
+  display:inline-flex;align-items:center;gap:9px;font-size:.86rem;font-weight:600;color:var(--text);
+  background:var(--bg2);border:1px solid var(--line);border-radius:999px;padding:10px 18px;
+}
+.note-pill::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px rgba(255,122,26,.8)}
+
+/* Преимущества */
+.adv-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:22px}
+.adv-card{padding:28px;display:flex;flex-direction:column}
+.adv-card p{margin:0;color:var(--muted);font-size:.93rem}
+
+/* ---------- Преподаватели ---------- */
+.teachers-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(340px,1fr));gap:24px}
+.teacher{display:flex;gap:22px;align-items:flex-start}
+.avatar{flex:none;width:104px;height:104px}
+.t-role{color:var(--blue);font-weight:700;font-size:.86rem;margin-bottom:14px}
+.quote{margin:16px 0 0;padding:12px 18px;border-left:3px solid var(--accent);background:rgba(255,122,26,.06);border-radius:0 12px 12px 0;color:var(--text);font-size:.92rem;font-style:italic}
+.exp-badge{display:inline-block;margin-bottom:10px;font-size:.74rem;font-weight:800;letter-spacing:.06em;color:var(--accent);text-transform:uppercase}
+
+/* Отзывы */
+.reviews-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:24px}
+.review{margin:0;display:flex;flex-direction:column}
+.stars{display:flex;gap:4px;color:var(--accent);margin-bottom:14px}
+.review blockquote{margin:0 0 20px;padding:0;font-size:.98rem;line-height:1.65;color:var(--text)}
+.review figcaption{display:flex;gap:12px;align-items:center;margin-top:auto}
+.ava-mini{flex:none;width:42px;height:42px;border-radius:50%;display:grid;place-items:center;font-family:'Unbounded',sans-serif;font-weight:700;font-size:.8rem;color:var(--accent);background:rgba(255,122,26,.1);border:1.5px solid rgba(255,122,26,.55)}
+.r-name{font-weight:700;font-size:.92rem}
+.r-sub{font-size:.8rem;color:var(--muted)}
+
+/* ---------- Заявка ---------- */
+.zayavka-grid{display:grid;grid-template-columns:1.25fr .75fr;gap:32px;align-items:stretch}
+.form-card{padding:34px 32px}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:22px}
+.field{display:flex;flex-direction:column;gap:7px}
+.field label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+.field input,.field select{
+  font:inherit;font-size:.95rem;color:var(--text);background:var(--bg);
+  border:1px solid var(--line);border-radius:12px;padding:13px 15px;width:100%;
+  transition:border-color .25s ease,box-shadow .25s ease;
+}
+.field select{appearance:none;background-image:linear-gradient(45deg,transparent 49%,var(--blue) 50%),linear-gradient(135deg,var(--blue) 50%,transparent 49%);background-position:calc(100% - 19px) 21px,calc(100% - 14px) 21px;background-size:5px 5px;background-repeat:no-repeat}
+.field input::placeholder{color:#6C85A5}
+.field input:focus,.field select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,122,26,.16)}
+.field.invalid input,.field.invalid select{border-color:var(--accent);box-shadow:0 0 0 3px rgba(255,122,26,.22)}
+option{background:var(--bg);color:var(--text)}
+.form-msg{margin:16px 0 0;font-size:.88rem;min-height:1.4em}
+.form-msg.ok{color:var(--blue)}
+.form-msg.err{color:var(--accent)}
+.guarantee{background:linear-gradient(160deg,rgba(255,122,26,.16),rgba(79,195,247,.07) 65%);border-color:rgba(255,122,26,.4)}
+.guarantee p{color:var(--text);font-size:.96rem;margin:0 0 18px}
+.gsteps{list-style:none;counter-reset:step;margin:0;padding:0;display:grid;gap:13px;font-size:.9rem;color:var(--muted)}
+.gsteps li{counter-increment:step;display:flex;gap:12px;align-items:flex-start}
+.gsteps li::before{content:counter(step);flex:none;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--accent);color:#0B1B33;font-family:'Unbounded',sans-serif;font-weight:800;font-size:.72rem}
+
+/* Контакты */
+.contacts-grid{display:grid;grid-template-columns:1fr 1.15fr;gap:32px;align-items:stretch}
+.contact-list{display:grid;gap:22px;align-content:start}
+.contact-item{padding:22px 24px;background:var(--card);border:1px solid var(--line);border-radius:16px;box-shadow:var(--shadow)}
+.c-label{display:block;margin-bottom:5px;font-size:.7rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-family:'Unbounded',sans-serif}
+.c-val{font-size:.98rem;font-weight:600}
+.c-val a{color:var(--text);text-decoration:none;border-bottom:1px dashed rgba(79,195,247,.5);transition:color .25s ease,border-color .25s ease}
+.c-val a:hover{color:var(--blue);border-color:var(--blue)}
+.c-note{display:block;margin-top:4px;font-size:.84rem;font-weight:500;color:var(--muted)}
+.big-phone{font-size:1.4rem;font-weight:700;letter-spacing:.01em}
+.c-row{display:flex;flex-wrap:wrap;align-items:center;gap:16px}
+
+/* Карта города (CSS) */
+.city-map{
+  position:relative;overflow:hidden;border-radius:18px;min-height:420px;flex:1;
+  border:1px solid var(--line);box-shadow:var(--shadow);
+  background-color:#0D2140;
+  background-image:
+    linear-gradient(rgba(79,195,247,.08) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(79,195,247,.08) 1px,transparent 1px);
+  background-size:36px 36px;
+}
+.street{position:absolute;background:rgba(234,241,250,.16);border-radius:2px}
+.street-h{left:0;right:0;top:44%;height:3px}
+.street-h2{left:0;right:0;top:74%;height:2px;background:rgba(234,241,250,.09)}
+.street-v{top:0;bottom:0;left:30%;width:3px}
+.street-d{left:-10%;right:-10%;top:8%;height:2px;background:rgba(234,241,250,.09);transform:rotate(9deg)}
+.st-label{position:absolute;font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);font-family:'Unbounded',sans-serif}
+.st-label.s1{left:6%;top:38%}
+.st-label.s2{left:31.5%;top:6%;writing-mode:vertical-rl}
+.ob-band{
+  position:absolute;left:-8%;right:-8%;bottom:-2%;height:64px;transform:rotate(-7deg);
+  background:linear-gradient(180deg,rgba(79,195,247,.16),rgba(79,195,247,.05));
+}
+.ob-label{position:absolute;right:6%;bottom:9%;font-size:.82rem;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:rgba(79,195,247,.75)}
+.metro{
+  position:absolute;left:22%;top:58%;display:inline-flex;align-items:center;gap:8px;
+  font-size:.76rem;font-weight:700;color:var(--text);background:rgba(11,27,51,.85);
+  border:1px solid var(--line);border-radius:999px;padding:7px 13px;
+}
+.metro i{font-style:normal;width:20px;height:20px;border-radius:5px;display:grid;place-items:center;background:var(--blue);color:#0B1B33;font-weight:800;font-size:.7rem}
+.route{position:absolute;left:31%;top:48%;width:160px;height:70px;border-bottom:2px dashed rgba(255,122,26,.5);border-right:2px dashed rgba(255,122,26,.5);border-bottom-right-radius:26px;transform:rotate(8deg)}
+.map-pin{position:absolute;left:56%;top:41%;width:20px;height:20px;background:var(--accent);border-radius:50% 50% 50% 4px;transform:rotate(45deg);box-shadow:0 0 18px rgba(255,122,26,.95);z-index:2}
+.map-pin::before{content:"";position:absolute;inset:5px;background:#0B1B33;border-radius:50%}
+.map-pin::after{content:"";position:absolute;inset:-13px;border:2px solid rgba(255,122,26,.55);border-radius:50%;animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{transform:scale(.5);opacity:1}100%{transform:scale(1.7);opacity:0}}
+.pin-label{
+  position:absolute;left:50%;bottom:34px;transform:translateX(-50%);white-space:nowrap;
+  background:rgba(11,27,51,.92);border:1px solid rgba(255,122,26,.5);color:var(--text);
+  font-size:.76rem;font-weight:700;border-radius:9px;padding:6px 11px;
+}
+
+/* ---------- Футер ---------- */
+.site-footer{background:var(--bg2);border-top:1px solid var(--line);padding-top:64px}
+.footer-grid{display:grid;grid-template-columns:1.1fr 1fr 1fr;gap:40px;padding-bottom:40px}
+.f-about p{margin:14px 0 0;color:var(--muted);font-size:.88rem;max-width:32ch}
+.f-nav{display:grid;gap:11px}
+.f-title{margin:0 0 16px;font-size:.7rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-family:'Unbounded',sans-serif}
+.f-nav a{color:var(--text);text-decoration:none;font-size:.92rem;transition:color .25s ease}
+.f-nav a:hover{color:var(--accent)}
+.footer-bottom{border-top:1px solid rgba(79,195,247,.1);padding:22px 0;color:var(--muted);font-size:.84rem;text-align:center}
+
+/* ---------- Появление при скролле ---------- */
+.reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s ease}
+.reveal.in{opacity:1;transform:translateY(0)}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{animation-duration:.001s!important;transition-duration:.001s!important}
+  .reveal{opacity:1;transform:none}
+}
+
+/* ---------- Адаптив ---------- */
+@media (max-width:1024px){
+  .hero{padding-top:140px}
+  .hero-inner{grid-template-columns:1fr;gap:44px}
+  .hero-actions{margin-bottom:0}
+  .zayavka-grid,.contacts-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr 1fr}
+  .facts{transform:translateY(40px)}
+}
+@media (max-width:900px){
+  .burger{display:inline-flex}
+  .main-nav{
+    position:absolute;top:100%;left:0;right:0;display:none;flex-direction:column;gap:0;
+    background:rgba(11,27,51,.97);border-bottom:1px solid var(--line);
+    padding:10px 24px 22px;box-shadow:0 30px 40px rgba(2,8,20,.55);
+  }
+  .nav-open .main-nav{display:flex}
+  .main-nav a{padding:14px 2px;border-bottom:1px solid rgba(79,195,247,.08);font-size:1rem}
+  .main-nav a::after{display:none}
+  .mobile-cta{display:inline-flex;margin-top:18px}
+}
+@media (max-width:768px){
+  body{font-size:16px}
+  section{padding:84px 0}
+  .container{padding:0 18px}
+  .facts{grid-template-columns:1fr 1fr;gap:18px 12px;padding:22px 18px}
+  .fact+.fact::before{display:none}
+  .form-grid{grid-template-columns:1fr}
+  .teacher{flex-direction:column}
+  .schedule-table thead{display:none}
+  .schedule-table,.schedule-table tbody,.schedule-table tr,.schedule-table td{display:block;width:100%}
+  .schedule-table tr{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 12px;padding:8px 0}
+  .table-wrap{border:none;box-shadow:none;overflow:visible;border-radius:0}
+  .schedule-table td{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:9px 18px;border-bottom:none}
+  .schedule-table td::before{content:attr(data-label);color:var(--muted);font-size:.78rem;text-transform:uppercase;letter-spacing:.06em;font-weight:700;flex:none}
+  .big-phone{font-size:1.15rem}
+}
+@media (max-width:640px){
+  .header-cta .btn-primary{display:none}
+  .street-d,.route{display:none}
+}
+@media (max-width:480px){
+  .hero{padding-top:122px}
+  .hero-actions .btn{width:100%}
+  .adv-grid,.courses-grid,.reviews-grid,.teachers-grid{grid-template-columns:1fr}
+  .footer-grid{grid-template-columns:1fr;gap:26px}
+  .card{padding:24px 20px}
+  .form-card{padding:26px 20px}
+  .city-map{min-height:340px}
+  .metro{left:10%;top:62%;font-size:.7rem}
+  .st-label.s1{font-size:.6rem}
+}
+</style>
+<noscript><style>.reveal{opacity:1;transform:none}</style></noscript>
+</head>
+<body>
+
+<!-- ===== Шапка ===== -->
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a class="logo" href="#top" aria-label="CBS5M — компьютерные курсы, на главную">
+      <span class="logo-mark">CBS5M</span>
+      <span class="logo-caption">компьютерные<br>курсы</span>
+    </a>
+    <nav class="main-nav" id="mainNav" aria-label="Разделы сайта">
+      <a href="#courses">Курсы</a>
+      <a href="#schedule">Расписание</a>
+      <a href="#teachers">Преподаватели</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+      <a href="#zayavka" class="btn btn-primary mobile-cta">Записаться на урок</a>
+    </nav>
+    <div class="header-cta">
+      <a href="#zayavka" class="btn btn-primary btn-small">Записаться на урок</a>
+      <button class="burger" id="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mainNav">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ===== Герой ===== -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <div class="hero-text">
+        <p class="eyebrow">Школа программирования · Новосибирск</p>
+        <h1>Научим подростка программировать — от первой строки кода <span class="accent">до олимпиадных побед</span></h1>
+        <p class="lead">Школа программирования CBS5M в Новосибирске. Занятия для школьников 10–17 лет в маленьких группах, с практикой и проектами с первого урока.</p>
+        <ul class="hero-points">
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Python, веб-разработка, олимпиады</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Офлайн и онлайн</li>
+          <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Первый урок — бесплатно</li>
+        </ul>
+        <div class="hero-actions">
+          <a href="#zayavka" class="btn btn-primary">Записаться на пробный урок</a>
+          <a href="#courses" class="btn btn-ghost">Смотреть курсы</a>
+        </div>
+      </div>
+      <div class="terminal-wrap reveal">
+        <div class="terminal" aria-hidden="true">
+          <div class="terminal-bar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="terminal-title">first_project.py — CBS5M</span>
+          </div>
+          <pre class="code"><code><span class="c-kw">class</span> <span class="c-fn">Student</span>:
+    <span class="c-kw">def</span> <span class="c-fn">__init__</span>(<span class="c-self">self</span>, name, age):
+        <span class="c-self">self</span>.name = name
+        <span class="c-self">self</span>.age = age
+
+    <span class="c-kw">def</span> <span class="c-fn">first_project</span>(<span class="c-self">self</span>):
+        <span class="c-fn">print</span>(<span class="c-str">f"{self.name} собрал своего бота!"</span>)
+        <span class="c-kw">return</span> <span class="c-str">"Telegram-бот"</span>
+
+matvey = <span class="c-fn">Student</span>(<span class="c-str">"Матвей"</span>, <span class="c-num">13</span>)
+matvey.<span class="c-fn">first_project</span>()
+<span class="c-cm"># → Telegram-бот готов уже на первом уроке</span>
+
+<span class="c-prompt">&gt;&gt;&gt;</span> <span class="cursor"></span></code></pre>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="facts reveal">
+        <div class="fact"><div class="num">10–17</div><div class="label">возраст учеников, лет</div></div>
+        <div class="fact"><div class="num">до 8</div><div class="label">человек в группе</div></div>
+        <div class="fact"><div class="num">2</div><div class="label">урока в неделю</div></div>
+        <div class="fact"><div class="num">1</div><div class="label">проект в портфолио каждый курс</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Курсы ===== -->
+  <section id="courses">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Направления</p>
+        <h2>Направления <span class="accent">курсов</span></h2>
+        <p class="section-sub">Три маршрута — от «я никогда не программировал» до призёрских мест на олимпиадах. На любом этапе ученик работает над реальным проектом.</p>
+      </div>
+      <div class="courses-grid">
+        <article class="card course reveal">
+          <div class="icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="8 5 2.5 12 8 19"/><polyline points="16 5 21.5 12 16 19"/><line x1="13.6" y1="4" x2="10.4" y2="20"/></svg>
+          </div>
+          <h3>Python: с нуля до первого проекта</h3>
+          <p class="card-desc">Основной курс для тех, кто начинает с нуля и хочет дойти до собственной программы.</p>
+          <ul class="check-list">
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Синтаксис Python и логика программирования</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>ООП и структура большой программы</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Работа с библиотеками и API</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Итоговый проект: Telegram-бот и мини-игра</li>
+          </ul>
+          <div class="meta-row">
+            <span class="chip">10–14 лет</span>
+            <span class="chip">4 месяца</span>
+            <span class="chip">2 урока в неделю</span>
+          </div>
+          <a href="#zayavka" class="btn btn-primary btn-block" data-course="Python">Записаться</a>
+        </article>
+
+        <article class="card course reveal" style="transition-delay:.08s">
+          <div class="icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2.5" y="4" width="19" height="16" rx="2.5"/><line x1="2.5" y1="9" x2="21.5" y2="9"/><circle cx="5.7" cy="6.5" r=".6" fill="currentColor" stroke="none"/><circle cx="8.1" cy="6.5" r=".6" fill="currentColor" stroke="none"/><circle cx="10.5" cy="6.5" r=".6" fill="currentColor" stroke="none"/><polyline points="10 13 8 15.5 10 18"/><polyline points="14 13 16 15.5 14 18"/></svg>
+          </div>
+          <h3>Веб-разработка</h3>
+          <p class="card-desc">Курс для тех, кто хочет видеть результат в браузере и делать сайты, которыми пользуются другие.</p>
+          <ul class="check-list">
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>HTML и CSS: структура и оформление страниц</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Адаптивная вёрстка под телефон и компьютер</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>JavaScript и интерактивные элементы</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Итоговый проект: личный сайт-портфолио</li>
+          </ul>
+          <div class="meta-row">
+            <span class="chip">12–16 лет</span>
+            <span class="chip">5 месяцев</span>
+            <span class="chip">2 урока в неделю</span>
+          </div>
+          <a href="#zayavka" class="btn btn-primary btn-block" data-course="Веб-разработка">Записаться</a>
+        </article>
+
+        <article class="card course reveal" style="transition-delay:.16s">
+          <div class="icon">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 3h8v5.5a4 4 0 0 1-8 0V3z"/><path d="M8 4.5H5v1a3.8 3.8 0 0 0 3 3.7"/><path d="M16 4.5h3v1a3.8 3.8 0 0 1-3 3.7"/><path d="M12 12.5V17"/><path d="M8 21h8l-1.2-4H9.2L8 21z"/></svg>
+          </div>
+          <h3>Олимпиадное программирование</h3>
+          <p class="card-desc">Серьёзный трек для тех, кто уже программирует и хочет соревноваться и побеждать.</p>
+          <ul class="check-list">
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Алгоритмы и структуры данных</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Решение задач повышенной сложности</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Подготовка к олимпиадам по информатике</li>
+            <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Тренировки на скорость и точность</li>
+          </ul>
+          <div class="meta-row">
+            <span class="chip">13–17 лет</span>
+            <span class="chip">Отбор по мини-собеседованию</span>
+            <span class="chip">2 урока в неделю</span>
+          </div>
+          <a href="#zayavka" class="btn btn-primary btn-block" data-course="Олимпиадное программирование">Записаться</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Расписание ===== -->
+  <section id="schedule" class="alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Расписание</p>
+        <h2>Расписание <span class="accent">занятий</span></h2>
+        <p class="section-sub">Удобные слоты после школы и по субботам. Актуальные окна уточняйте по телефону — подберём группу под ваш график.</p>
+      </div>
+      <div class="table-wrap reveal">
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th scope="col">Курс</th>
+              <th scope="col">Дни</th>
+              <th scope="col">Время</th>
+              <th scope="col">Кому подходит</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td data-label="Курс">Python — начинающие</td>
+              <td data-label="Дни">вторник, четверг</td>
+              <td data-label="Время">15:00–16:30</td>
+              <td data-label="Кому подходит">с нуля, 10–14 лет</td>
+            </tr>
+            <tr>
+              <td data-label="Курс">Python — продолжающие</td>
+              <td data-label="Дни">понедельник, пятница</td>
+              <td data-label="Время">17:00–18:30</td>
+              <td data-label="Кому подходит">после базового курса</td>
+            </tr>
+            <tr>
+              <td data-label="Курс">Веб-разработка</td>
+              <td data-label="Дни">среда, пятница</td>
+              <td data-label="Время">16:00–17:30</td>
+              <td data-label="Кому подходит">12–16 лет</td>
+            </tr>
+            <tr>
+              <td data-label="Курс">Олимпиадный клуб</td>
+              <td data-label="Дни">суббота</td>
+              <td data-label="Время">11:00–13:00</td>
+              <td data-label="Кому подходит">13–17 лет, по отбору</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="note-row reveal">
+        <span class="note-pill">Формат: офлайн в Новосибирске и онлайн</span>
+        <span class="note-pill">Группы до 8 человек</span>
+        <span class="note-pill">Можно начать с любого месяца, если есть место</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Почему у нас ===== -->
+  <section id="about">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Преимущества</p>
+        <h2>Почему <span class="accent">у нас учатся</span></h2>
+        <p class="section-sub">Мы строим курс так, чтобы ребёнку было интересно, а родителям — спокойно и понятно.</p>
+      </div>
+      <div class="adv-grid">
+        <div class="adv-card card reveal">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 20v-1.5a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4V20"/><circle cx="9" cy="7.5" r="3.5"/><path d="M22 20v-1.5a4 4 0 0 0-3-3.85"/><path d="M16 4.15a4 4 0 0 1 0 6.7"/></svg></div>
+          <h3>Маленькие группы и внимание каждому</h3>
+          <p>До 8 учеников в группе: преподаватель знает всех по именам и успевает помочь, когда ребёнок застрял.</p>
+        </div>
+        <div class="adv-card card reveal" style="transition-delay:.06s">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg></div>
+          <h3>Практика с первого урока</h3>
+          <p>Никакой сухой теории: уже на первом занятии школьник запускает свою первую работающую программу.</p>
+        </div>
+        <div class="adv-card card reveal" style="transition-delay:.12s">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 21 7.2v9.6L12 21.5 3 16.8V7.2l9-4.7z"/><path d="M3 7.2 12 12l9-4.8M12 12v9.5"/></svg></div>
+          <h3>Проекты, которые не стыдно показать</h3>
+          <p>Каждый курс заканчивается работой в портфолио: бот, сайт или решённый олимпиадный набор задач.</p>
+        </div>
+        <div class="adv-card card reveal">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><line x1="8.5" y1="12" x2="8.6" y2="12"/><line x1="12" y1="12" x2="12.1" y2="12"/><line x1="15.5" y1="12" x2="15.6" y2="12"/></svg></div>
+          <h3>Понятные отчёты для родителей</h3>
+          <p>Раз в месяц присылаем короткий отчёт: что прошли, что получилось у ребёнка и какие шаги дальше.</p>
+        </div>
+        <div class="adv-card card reveal" style="transition-delay:.06s">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8.5" r="5.5"/><path d="m9.8 8.5 1.7 1.7 3-3.2"/><path d="M8.5 13.4 6.5 21.5l5.5-2.8 5.5 2.8-2-8.1"/></svg></div>
+          <h3>Преподаватели-практики</h3>
+          <p>Учим не по учебнику десятилетней давности: курсы ведут действующие разработчики и призёры олимпиад.</p>
+        </div>
+        <div class="adv-card card reveal" style="transition-delay:.12s">
+          <div class="icon"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 9 12 4.5 2 9l10 4.5L22 9z"/><path d="M6 11.2V16c0 1.6 2.7 2.9 6 2.9s6-1.3 6-2.9v-4.8"/><path d="M22 9v5"/></svg></div>
+          <h3>Готовим к олимпиадам и поступлению</h3>
+          <p>Алгоритмическая база помогает и на олимпиадах по информатике, и при поступлении на IT-направления.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Преподаватели ===== -->
+  <section id="teachers" class="alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Команда</p>
+        <h2><span class="accent">Преподаватели</span></h2>
+        <p class="section-sub">Курсы ведут практикующие разработчики и призёры олимпиад — объясняют на живом языке и без занудства.</p>
+      </div>
+      <div class="teachers-grid">
+        <article class="card teacher reveal">
+          <div class="avatar" aria-hidden="true">
+            <svg width="104" height="104" viewBox="0 0 104 104">
+              <circle cx="52" cy="52" r="48" fill="rgba(255,122,26,.08)" stroke="#FF7A1A" stroke-width="2"/>
+              <text x="52" y="62" text-anchor="middle" font-family="'Unbounded',sans-serif" font-size="26" font-weight="700" fill="#EAF1FA">АК</text>
+            </svg>
+          </div>
+          <div class="t-info">
+            <span class="exp-badge">8 лет опыта</span>
+            <h3>Артём Ковалёв</h3>
+            <p class="t-role">Преподаватель Python и олимпиадного программирования</p>
+            <ul class="check-list">
+              <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Призёр региональных олимпиад по информатике</li>
+              <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Ведёт Python-трек и субботний олимпиадный клуб</li>
+            </ul>
+            <blockquote class="quote">«Мой принцип: ребёнок не зритель, он каждый урок что-то собирает сам».</blockquote>
+          </div>
+        </article>
+
+        <article class="card teacher reveal" style="transition-delay:.08s">
+          <div class="avatar" aria-hidden="true">
+            <svg width="104" height="104" viewBox="0 0 104 104">
+              <circle cx="52" cy="52" r="48" fill="rgba(255,122,26,.08)" stroke="#FF7A1A" stroke-width="2"/>
+              <text x="52" y="62" text-anchor="middle" font-family="'Unbounded',sans-serif" font-size="26" font-weight="700" fill="#EAF1FA">ДС</text>
+            </svg>
+          </div>
+          <div class="t-info">
+            <span class="exp-badge">6 лет опыта</span>
+            <h3>Дарья Соколова</h3>
+            <p class="t-role">Преподаватель веб-разработки, фронтенд-разработчик</p>
+            <ul class="check-list">
+              <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Коммерческий фронтенд: интерфейсы для реальных продуктов</li>
+              <li><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="4 12.5 9.5 18 20 6.5"/></svg>Учит верстать адаптивно и с вниманием к деталям</li>
+            </ul>
+            <blockquote class="quote">«На курсе по веб-разработке каждый ученик делает свой настоящий сайт, а не шаблон из учебника».</blockquote>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Отзывы ===== -->
+  <section id="reviews">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Отзывы</p>
+        <h2>Отзывы учеников <span class="blue">и родителей</span></h2>
+        <p class="section-sub">Коротко и по делу — как говорят те, кто уже прошёл через наши курсы.</p>
+      </div>
+      <div class="reviews-grid">
+        <figure class="card review reveal">
+          <div class="stars" aria-label="Оценка 5 из 5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+          </div>
+          <blockquote>«За месяц собрал своего первого бота, теперь всю семью им смешу».</blockquote>
+          <figcaption>
+            <span class="ava-mini" aria-hidden="true">М</span>
+            <span>
+              <span class="r-name">Матвей, 13 лет</span><br>
+              <span class="r-sub">курс Python</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <figure class="card review reveal" style="transition-delay:.08s">
+          <div class="stars" aria-label="Оценка 5 из 5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+          </div>
+          <blockquote>«Дочка сама делает сайт и объясняет мне, что такое хостинг. Курс оправдал себя полностью».</blockquote>
+          <figcaption>
+            <span class="ava-mini" aria-hidden="true">Е</span>
+            <span>
+              <span class="r-name">Елена, мама ученицы</span><br>
+              <span class="r-sub">курс веб-разработки</span>
+            </span>
+          </figcaption>
+        </figure>
+
+        <figure class="card review reveal" style="transition-delay:.16s">
+          <div class="stars" aria-label="Оценка 5 из 5">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17l-6 3.6 1.4-6.8-5.1-4.7 6.9-.8z"/></svg>
+          </div>
+          <blockquote>«В прошлом году взял призёрское место на муниципальной олимпиаде — всё благодаря тренировкам по субботам».</blockquote>
+          <figcaption>
+            <span class="ava-mini" aria-hidden="true">К</span>
+            <span>
+              <span class="r-name">Кирилл, 16 лет</span><br>
+              <span class="r-sub">олимпиадный клуб</span>
+            </span>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Заявка ===== -->
+  <section id="zayavka" class="alt">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Запись</p>
+        <h2>Заявка на <span class="accent">пробный урок</span></h2>
+        <p class="section-sub">Оставьте контакт — подберём группу и время под ваш график.</p>
+      </div>
+      <div class="zayavka-grid">
+        <div class="card form-card reveal">
+          <form id="lessonForm" novalidate>
+            <div class="form-grid">
+              <div class="field">
+                <label for="fName">Ваше имя</label>
+                <input id="fName" name="name" type="text" placeholder="Как вас зовут?" autocomplete="name">
+              </div>
+              <div class="field">
+                <label for="fContact">Телефон или e-mail</label>
+                <input id="fContact" name="contact" type="text" placeholder="+7 (___) ___-__-__ или mail@example.ru" autocomplete="tel">
+              </div>
+              <div class="field">
+                <label for="fAge">Возраст ребёнка</label>
+                <select id="fAge" name="age">
+                  <option value="" selected>Выберите возраст</option>
+                  <option value="10">10 лет</option>
+                  <option value="11">11 лет</option>
+                  <option value="12">12 лет</option>
+                  <option value="13">13 лет</option>
+                  <option value="14">14 лет</option>
+                  <option value="15">15 лет</option>
+                  <option value="16">16 лет</option>
+                  <option value="17">17 лет</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="fDirection">Направление</label>
+                <select id="fDirection" name="direction">
+                  <option value="Python">Python</option>
+                  <option value="Веб-разработка">Веб-разработка</option>
+                  <option value="Олимпиадное программирование">Олимпиадное программирование</option>
+                  <option value="Не выбрано" selected>Не выбрано</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить заявку</button>
+            <p class="form-msg" id="formMsg" role="status" aria-live="polite"></p>
+          </form>
+        </div>
+        <aside class="card guarantee reveal" style="transition-delay:.1s">
+          <p>Первое занятие бесплатное и ни к чему не обязывает. Ответим в течение рабочего дня.</p>
+          <ol class="gsteps">
+            <li>Вы оставляете заявку — мы связываемся с вами.</li>
+            <li>Выбираем удобное время и направление.</li>
+            <li>Ребёнок приходит на бесплатный урок и решает, остаётся ли.</li>
+          </ol>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== Контакты ===== -->
+  <section id="contacts">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Контакты</p>
+        <h2>Как нас <span class="accent">найти</span></h2>
+        <p class="section-sub">Приходите на пробный урок — покажем классы и познакомим с преподавателями.</p>
+      </div>
+      <div class="contacts-grid">
+        <div class="contact-list reveal">
+          <div class="contact-item">
+            <span class="c-label">Адрес</span>
+            <span class="c-val">Новосибирск, ул. Советская, 19, офис 410<span class="c-note">БЦ «Новосиб», 5 минут от метро «Красный проспект»</span></span>
+          </div>
+          <div class="contact-item">
+            <span class="c-label">Телефон</span>
+            <span class="c-val c-row">
+              <a href="tel:+73832124567" class="big-phone">+7 (383) 212-45-67</a>
+              <a href="#zayavka" class="btn btn-primary btn-small">Записаться</a>
+            </span>
+          </div>
+          <div class="contact-item">
+            <span class="c-label">Почта</span>
+            <span class="c-val"><a href="mailto:hello@cbs5m.ru">hello@cbs5m.ru</a></span>
+          </div>
+          <div class="contact-item">
+            <span class="c-label">Часы работы</span>
+            <span class="c-val">пн–сб 10:00–20:00<span class="c-note">воскресенье — выходной</span></span>
+          </div>
+        </div>
+        <div class="city-map reveal" style="transition-delay:.1s" role="img" aria-label="Схема: офис CBS5M на улице Советской, 19, рядом с метро Красный проспект">
+          <span class="street street-h" aria-hidden="true"></span>
+          <span class="street street-h2" aria-hidden="true"></span>
+          <span class="street street-v" aria-hidden="true"></span>
+          <span class="street street-d" aria-hidden="true"></span>
+          <span class="st-label s1" aria-hidden="true">ул. Советская</span>
+          <span class="st-label s2" aria-hidden="true">Красный проспект</span>
+          <span class="ob-band" aria-hidden="true"></span>
+          <span class="ob-label" aria-hidden="true">р. Обь</span>
+          <span class="route" aria-hidden="true"></span>
+          <span class="metro" aria-hidden="true"><i>M</i>м. «Красный проспект»</span>
+          <span class="map-pin" aria-hidden="true"><span class="pin-label">БЦ «Новосиб» · Советская, 19</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ===== Футер ===== -->
+<footer class="site-footer">
+  <div class="container footer-grid">
+    <div class="f-about">
+      <a class="logo" href="#top" aria-label="CBS5M, наверх">
+        <span class="logo-mark">CBS5M</span>
+        <span class="logo-caption">компьютерные<br>курсы</span>
+      </a>
+      <p>Школа программирования для подростков 10–17 лет в Новосибирске. Практика, проекты и результат с первого урока.</p>
+    </div>
+    <nav class="f-nav" aria-label="Разделы сайта в подвале">
+      <h3 class="f-title">Навигация</h3>
+      <a href="#courses">Курсы</a>
+      <a href="#schedule">Расписание</a>
+      <a href="#teachers">Преподаватели</a>
+      <a href="#reviews">Отзывы</a>
+      <a href="#contacts">Контакты</a>
+      <a href="#zayavka">Заявка на пробный урок</a>
+    </nav>
+    <div class="f-nav">
+      <h3 class="f-title">Контакты</h3>
+      <a href="tel:+73832124567">+7 (383) 212-45-67</a>
+      <a href="mailto:hello@cbs5m.ru">hello@cbs5m.ru</a>
+      <span style="color:var(--muted);font-size:.92rem">Новосибирск, ул. Советская, 19, офис 410</span>
+      <span style="color:var(--muted);font-size:.92rem">пн–сб 10:00–20:00</span>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="container">© 2026 CBS5M · Компьютерные курсы для подростков в Новосибирске</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var header = document.getElementById('siteHeader');
+  var burger = document.getElementById('burger');
+  var nav = document.getElementById('mainNav');
+  var navLinks = Array.prototype.slice.call(nav.querySelectorAll('a[href^="#"]'));
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function closeMenu() {
+    header.classList.remove('nav-open');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Открыть меню');
+  }
+
+  burger.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var open = header.classList.toggle('nav-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+    burger.setAttribute('aria-label', open ? 'Закрыть меню' : 'Открыть меню');
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!header.contains(e.target)) { closeMenu(); }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') { closeMenu(); }
+  });
+
+  /* Плавная прокрутка по якорям + предвыбор направления из карточки курса */
+  Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'), function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href');
+      if (!id || id.length < 2) { return; }
+      var target = document.querySelector(id);
+      if (!target) { return; }
+      e.preventDefault();
+      var course = link.getAttribute('data-course');
+      if (course && dirField) {
+        Array.prototype.forEach.call(dirField.options, function (opt) {
+          if (opt.value === course) { dirField.value = course; }
+        });
+      }
+      closeMenu();
+      var y = target.getBoundingClientRect().top + window.pageYOffset - 88;
+      window.scrollTo({ top: y < 0 ? 0 : y, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  });
+
+  /* Подсветка активного пункта меню + тень шапки */
+  var sections = Array.prototype.slice.call(document.querySelectorAll('main section[id]'));
+  function updateActive() {
+    var pos = window.pageYOffset + 140;
+    var current = '';
+    sections.forEach(function (s) {
+      if (s.offsetTop <= pos) { current = s.id; }
+    });
+    navLinks.forEach(function (l) {
+      l.classList.toggle('active', l.getAttribute('href') === '#' + current);
+    });
+    header.classList.toggle('scrolled', window.pageYOffset > 10);
+  }
+  window.addEventListener('scroll', updateActive, { passive: true });
+  window.addEventListener('resize', updateActive);
+  updateActive();
+
+  /* Аккуратное появление блоков при скролле */
+  var revealables = Array.prototype.slice.call(document.querySelectorAll('.reveal'));
+  if ('IntersectionObserver' in window && !reduce) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) {
+          en.target.classList.add('in');
+          io.unobserve(en.target);
+        }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+    revealables.forEach(function (el) { io.observe(el); });
+  } else {
+    revealables.forEach(function (el) { el.classList.add('in'); });
+  }
+
+  /* Форма заявки: валидация и mailto без сервера */
+  var form = document.getElementById('lessonForm');
+  var nameField = document.getElementById('fName');
+  var contactField = document.getElementById('fContact');
+  var ageField = document.getElementById('fAge');
+  var dirField = document.getElementById('fDirection');
+  var formMsg = document.getElementById('formMsg');
+
+  function setError(field) {
+    field.closest('.field').classList.add('invalid');
+    field.setAttribute('aria-invalid', 'true');
+  }
+
+  function clearErrors() {
+    Array.prototype.forEach.call(form.querySelectorAll('.field'), function (f) {
+      f.classList.remove('invalid');
+    });
+    [nameField, contactField, ageField, dirField].forEach(function (f) {
+      f.removeAttribute('aria-invalid');
+    });
+  }
+
+  function showMsg(text, ok) {
+    formMsg.textContent = text;
+    formMsg.className = 'form-msg ' + (ok ? 'ok' : 'err');
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    clearErrors();
+
+    var name = nameField.value.trim();
+    var contact = contactField.value.trim();
+    var age = ageField.value;
+    var dir = dirField.value || 'Не выбрано';
+    var errors = [];
+
+    var digits = (contact.match(/\d/g) || []).length;
+    var phoneOk = digits >= 10 && /^[\d\s()+\-]+$/.test(contact);
+    var emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(contact);
+
+    if (name.length < 2) {
+      setError(nameField);
+      errors.push('Укажите имя — как к вам обращаться.');
+    }
+    if (!contact) {
+      setError(contactField);
+      errors.push('Введите телефон или e-mail для связи.');
+    } else if (!phoneOk && !emailOk) {
+      setError(contactField);
+      errors.push('Похоже, в контакте опечатка: нужен телефон (не меньше 10 цифр) или адрес почты.');
+    }
+    if (!age) {
+      setError(ageField);
+      errors.push('Выберите возраст ребёнка.');
+    }
+    if (errors.length) {
+      showMsg(errors[0], false);
+      return;
+    }
+
+    var body = [
+      'Имя: ' + name,
+      'Телефон или e-mail: ' + contact,
+      'Возраст ребёнка: ' + age + ' лет',
+      'Направление: ' + dir
+    ].join('\r\n');
+
+    var url = 'mailto:hello@cbs5m.ru?subject=' +
+      encodeURIComponent('Заявка на пробный урок') +
+      '&body=' + encodeURIComponent(body);
+
+    showMsg('Заявка собрана — открываем вашу почту с готовым письмом. Если почтовый клиент не запустился, напишите нам hello@cbs5m.ru или позвоните +7 (383) 212-45-67.', true);
+    window.location.href = url;
+  });
+})();
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "CBS5M — компьютерные курсы",
+  "url": "https://cbs5m.ru/",
+  "email": "hello@cbs5m.ru",
+  "telephone": "+7 (383) 212-45-67",
+  "description": "Школа программирования для подростков 10–17 лет в Новосибирске: Python, веб-разработка, олимпиадное программирование.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Новосибирск",
+    "streetAddress": "ул. Советская, 19, офис 410",
+    "addressCountry": "RU"
+  },
+  "openingHours": "Mo-Sa 10:00-20:00"
+}
+</script>
+
+</body>
+</html>
