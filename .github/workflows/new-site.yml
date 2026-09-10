@@ -15,6 +15,15 @@ on:
         description: 'Списывать 20₽ за неделю без посетителей (иначе сайт отключается)'
         type: boolean
         default: false
+      model:
+        description: 'Модель ИИ (при исчерпанном лимите Neo автоматически возьмёт другую)'
+        type: choice
+        default: 'glm-5.3-flash'
+        options:
+          - glm-5.3-flash
+          - hy3
+          - qwen3.8-flash
+          - mimo-v2.5
 
 permissions:
   contents: write
@@ -44,7 +53,7 @@ jobs:
           git config user.name "neo-pipeline"
           git config user.email "neo-pipeline@users.noreply.github.com"
 
-      - name: Настроить DeepSeek Harness (GLM-5.3-flash)
+      - name: Настроить DeepSeek Harness (GLM-5.3-flash / Hy3 / Qwen3.8-Flash / Mimo-v2.5)
         env:
           BAI_API_KEY_SECRET: ${{ secrets.BAI_API_KEY }}
         run: bash pipeline/setup-dsh.sh
@@ -63,7 +72,9 @@ jobs:
             echo "WEEKLY=false" >> "$GITHUB_ENV"
           fi
 
-      - name: Создать сайт (промпт → ИИ → публикация)
+      - name: Создать сайт (проверка модели → промпт → ИИ → публикация)
+        env:
+          NEO_MODEL: ${{ github.event_name == 'workflow_dispatch' && inputs.model || '' }}
         run: |
           node pipeline/new-site.js \
             --request-file /tmp/request.txt \

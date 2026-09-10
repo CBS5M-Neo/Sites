@@ -26,3 +26,15 @@ body:
         с тремя карточками и поменяйте телефон в подвале на +7…
     validations:
       required: true
+  - type: dropdown
+    id: model
+    attributes:
+      label: Модель для правки
+      description: Neo проверит её доступность; при исчерпанном лимите автоматически возьмёт другую
+      options:
+        - Модель сайта (рекомендуется)
+        - GLM-5.3-flash
+        - Hy3
+        - Qwen3.8-Flash
+        - Mimo-v2.5
+      default: 0

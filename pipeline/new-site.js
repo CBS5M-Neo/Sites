@@ -10,8 +10,11 @@
  *   --repo owner/repo (для gh-комментариев, опционально)
  *   --workdir клон репозитория Sites
  *   --weekly-charge true|false  (настройка списания 20 ₽ за простой)
+ *   --model glm-5.3-flash|hy3|qwen3.8-flash|mimo-v2.5 (или из текста заявки)
  *
  * Что делает:
+ *   0. Проверяет доступность выбранной ИИ-модели (при исчерпанном лимите
+ *      автоматически переключается на другую из списка)
  *   1. Проверяет и улучшает промпт (enhance-prompt.js)
  *   2. Генерирует сайт в отдельной временной папке (generate-site.js)
  *   3. Переносит папку <slug>/ в корень репозитория, обновляет sites.json
@@ -24,7 +27,8 @@ const path = require('path');
 const {
   log, die, sh, git, gh,
   slugify, uniqueSlug, RESERVED_DIRS,
-  readRegistry, saveRegistry, isoDay
+  readRegistry, saveRegistry, isoDay,
+  normalizeModel, parseModelFromText, pickWorkingModel
 } = require('./lib/common');
 
 function parseArgs(argv) {
@@ -35,13 +39,14 @@ function parseArgs(argv) {
     else if (argv[i] === '--repo') a.repo = argv[++i];
     else if (argv[i] === '--workdir') a.workdir = argv[++i];
     else if (argv[i] === '--weekly-charge') a.weeklyCharge = argv[++i] !== 'false';
+    else if (argv[i] === '--model') a.model = argv[++i];
   }
   return a;
 }
 
 const args = parseArgs(process.argv.slice(2));
 if (!args.requestFile || !args.workdir) {
-  die('Использование: node new-site.js --request-file f.txt --workdir <dir> [--issue N --repo owner/repo] [--weekly-charge true]');
+  die('Использование: node new-site.js --request-file f.txt --workdir <dir> [--issue N --repo owner/repo] [--weekly-charge true] [--model имя]');
 }
 
 const repo = path.resolve(args.workdir);
@@ -72,10 +77,24 @@ try {
     process.exit(0);
   }
 
-  /* ---- 1. проверка и улучшение промпта ---- */
+  /* ---- 0. проверка и улучшение промпта ---- */
+  /* Модель: аргумент --model, упоминание из заявки, env NEO_MODEL — по умолчанию.
+     pickWorkingModel проверяет, что модель реально отвечает (лимиты кончаются). */
+  let model = pickWorkingModel(
+    normalizeModel(args.model) || parseModelFromText(rawRequest) || process.env.NEO_MODEL);
+  log(`Выбрана модель: ${model}`);
+
   log('Этап 1: проверка и улучшение промпта…');
-  const r1 = sh('node', [path.join(__dirname, 'enhance-prompt.js'),
-    '--request-file', args.requestFile, '--out', promptFile]);
+  let r1 = sh('node', [path.join(__dirname, 'enhance-prompt.js'),
+    '--request-file', args.requestFile, '--out', promptFile, '--model', model]);
+
+  if (r1.code !== 0 && r1.code !== 2) {
+    /* возможно, лимит модели кончился прямо сейчас — пробуем другую и повторяем */
+    log('Этап 1 упал, пробую другую модель…');
+    model = pickWorkingModel();
+    r1 = sh('node', [path.join(__dirname, 'enhance-prompt.js'),
+      '--request-file', args.requestFile, '--out', promptFile, '--model', model]);
+  }
 
   if (r1.code !== 0 || !fs.existsSync(promptFile)) {
     const rejected = r1.code === 2; // валидатор отклонил заявку
@@ -103,11 +122,21 @@ try {
   const slug = uniqueSlug(slugify(final.siteTitle), taken);
 
   /* ---- 3. генерация сайта во временной папке ---- */
-  log(`Этап 2: генерация сайта (папка "${slug}")…`);
+  log(`Этап 2: генерация сайта (папка "${slug}", модель ${final.model || model})…`);
   const r2 = sh('node', [path.join(__dirname, 'generate-site.js'),
-    '--prompt-file', promptFile, '--slug', slug, '--workdir', tmp]);
+    '--prompt-file', promptFile, '--slug', slug, '--workdir', tmp,
+    '--model', final.model || model]);
 
-  if (r2.code !== 0) throw new Error('Генерация сайта не удалась:\n' + r2.stderr);
+  if (r2.code !== 0) {
+    /* генератор сам перебирал модели и всё равно упал — пробуем ещё раз с новой живую */
+    log('Генерация не удалась, повторяю с другой моделью…');
+    model = pickWorkingModel();
+    const r2b = sh('node', [path.join(__dirname, 'generate-site.js'),
+      '--prompt-file', promptFile, '--slug', slug, '--workdir', tmp, '--model', model]);
+    if (r2b.code !== 0) throw new Error('Генерация сайта не удалась:\n' + r2b.stderr);
+  }
+  const mm = (r2.stdout || '').match(/MODEL=(\S+)/);
+  const usedModel = mm ? mm[1] : (final.model || model);
 
   /* ---- 4. перенос в репозиторий ---- */
   const src = path.join(tmp, slug);
@@ -138,6 +167,7 @@ try {
     url: `https://cbs5m-neo.github.io/Sites/${slug}/`,
     createdAt: isoDay(),
     status: 'active',
+    model: usedModel,
     weeklyCharge: args.weeklyCharge !== false,
     visits: 0,
     lastWeeklyCheck: null,
@@ -166,6 +196,7 @@ try {
     comment(args.issue,
       `🤖 **Neo:** сайт готов! 🎉\n\n` +
       `**Название:** ${final.siteTitle}\n` +
+      `**Модель:** \`${usedModel}\`\n` +
       `**Ссылка:** ${url}\n\n` +
       `В стоимость входят 8 бесплатных правок — откройте issue с шаблоном «Правка сайта», ` +
       `когда захотите что-то изменить. Спасибо, что выбрали Neo!`);

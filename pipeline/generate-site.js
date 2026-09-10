@@ -7,14 +7,16 @@
  *        --workdir рабочая папка, в которой модель создаёт <slug>/index.html
  * Выход: код 0 и папка <workdir>/<slug>/index.html
  *
- * Модель (GLM-5.3-flash) работает как агент с доступом к файловой системе:
- * она сама создаёт папку сайта и складывает туда готовые файлы.
+ * Модель-генератор (GLM-5.3-flash / Hy3 / Qwen3.8-Flash / Mimo-v2.5) работает как
+ * агент с доступом к файловой системе: она сама создаёт папку сайта и складывает
+ * туда готовые файлы. Если у выбранной модели кончился лимит — автоматика
+ * пробует остальные модели из списка.
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
-const {log, die, askDsh} = require('./lib/common');
+const {log, die, askDsh, normalizeModel, parseModelFromText, pickWorkingModel, probeModel, AVAILABLE_MODELS} = require('./lib/common');
 
 function parseArgs(argv) {
   const args = {};
@@ -22,6 +24,7 @@ function parseArgs(argv) {
     if (argv[i] === '--prompt-file') args.promptFile = argv[++i];
     else if (argv[i] === '--slug') args.slug = argv[++i];
     else if (argv[i] === '--workdir') args.workdir = argv[++i];
+    else if (argv[i] === '--model') args.model = argv[++i];
   }
   return args;
 }
@@ -66,25 +69,46 @@ ${promptData.finalPrompt}
 и ответь последней строкой ровно: DONE ${slug}
 `.trim();
 
-try {
-  const answer = askDsh(GEN_PROMPT, {timeoutMs: 25 * 60_000, workdir});
+/* ------------------------ выбор модели -------------------------------- */
+/* --model уже проверена оркестратором; затем поле model из prompt-файла;
+   иначе подбираем рабочую сами. */
+let model = normalizeModel(args.model) || normalizeModel(promptData.model) ||
+  pickWorkingModel(normalizeModel(process.env.NEO_MODEL) || parseModelFromText(promptData.finalPrompt));
+log(`Генерация моделью: ${model}`);
 
-  const siteDir = path.join(workdir, slug);
-  const indexFile = path.join(siteDir, 'index.html');
+const tried = new Set();
+let lastErr = null;
+for (;;) {
+  if (!model || tried.has(model)) break;
+  tried.add(model);
+  try {
+    const answer = askDsh(GEN_PROMPT, {timeoutMs: 25 * 60_000, workdir, model});
 
-  if (!fs.existsSync(indexFile)) {
-    console.error('--- ответ модели ---\n' + answer.slice(-3000));
-    die(`Модель не создала ${slug}/index.html`);
+    const siteDir = path.join(workdir, slug);
+    const indexFile = path.join(siteDir, 'index.html');
+
+    if (!fs.existsSync(indexFile)) {
+      console.error('--- ответ модели ---\n' + answer.slice(-3000));
+      throw new Error(`Модель ${model} не создала ${slug}/index.html`);
+    }
+
+    const html = fs.readFileSync(indexFile, 'utf8');
+    if (html.length < 500) {
+      throw new Error(`index.html подозрительно мал (${html.length} байт) — генерация не засчитана`);
+    }
+
+    const files = fs.readdirSync(siteDir);
+    log(`Сайт сгенерирован моделью ${model}: ${slug}/ (${files.length} файл(ов), index.html ${(html.length / 1024).toFixed(1)} КБ)`);
+    console.log('MODEL=' + model);
+    process.exit(0);
+  } catch (e) {
+    lastErr = e;
+    log(`Сбой на модели ${model}: ${String(e.message).split('\n')[0]}`);
+    /* ищем следующую живую модель (лимиты у провайдеров кончаются) */
+    model = null;
+    for (const m of AVAILABLE_MODELS.filter(x => !tried.has(x))) {
+      if (probeModel(m)) { model = m; log(`Повторяю генерацию на модели ${m}`); break; }
+    }
   }
-
-  const html = fs.readFileSync(indexFile, 'utf8');
-  if (html.length < 500) {
-    die(`index.html подозрительно мал (${html.length} байт) — считаем генерацию неудачной`);
-  }
-
-  const files = fs.readdirSync(siteDir);
-  log(`Сайт сгенерирован: ${slug}/ (${files.length} файл(ов), index.html ${(html.length / 1024).toFixed(1)} КБ)`);
-  console.log(files.join('\n'));
-} catch (e) {
-  die(e.message);
 }
+die(lastErr ? lastErr.message : 'Генерация не удалась');

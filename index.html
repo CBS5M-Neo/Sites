@@ -58,6 +58,7 @@
         '<h2></h2>' +
         '<p></p>' +
         '<div class="meta">создан ' + (s.createdAt || '—') +
+        (s.model ? ' · ' + s.model : '') +
         ' · <span class="badge ' + (off ? 'off">отключён' : 'on">активен') + '</span></div>';
       a.querySelector('h2').textContent = s.name || s.slug;
       a.querySelector('p').textContent = s.description || '';

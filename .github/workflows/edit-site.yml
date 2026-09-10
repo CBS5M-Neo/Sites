@@ -14,6 +14,16 @@ on:
       instruction:
         description: 'Что изменить на сайте'
         required: true
+      model:
+        description: 'Модель ИИ (auto — та, что делала сайт; при исчерпанном лимите Neo возьмёт другую)'
+        type: choice
+        default: 'auto'
+        options:
+          - auto
+          - glm-5.3-flash
+          - hy3
+          - qwen3.8-flash
+          - mimo-v2.5
 
 permissions:
   contents: write
@@ -42,7 +52,7 @@ jobs:
           git config user.name "neo-pipeline"
           git config user.email "neo-pipeline@users.noreply.github.com"
 
-      - name: Настроить DeepSeek Harness (GLM-5.3-flash)
+      - name: Настроить DeepSeek Harness (GLM-5.3-flash / Hy3 / Qwen3.8-Flash / Mimo-v2.5)
         env:
           BAI_API_KEY_SECRET: ${{ secrets.BAI_API_KEY }}
         run: bash pipeline/setup-dsh.sh
@@ -63,6 +73,8 @@ jobs:
           echo "SLUG=$SLUG" >> "$GITHUB_ENV"
 
       - name: Применить правку
+        env:
+          NEO_MODEL: ${{ inputs.model != 'auto' && inputs.model || '' }}
         run: |
           node pipeline/apply-edit.js \
             --slug "$SLUG" \

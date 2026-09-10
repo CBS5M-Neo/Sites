@@ -11,7 +11,7 @@
 'use strict';
 
 const fs = require('fs');
-const {log, die, askDshJson} = require('./lib/common');
+const {log, die, askDshJson, normalizeModel, parseModelFromText, pickWorkingModel, DEFAULT_MODEL} = require('./lib/common');
 
 /* ------------------------- разбор аргументов ------------------------- */
 function parseArgs(argv) {
@@ -21,6 +21,7 @@ function parseArgs(argv) {
     if (a === '--request') args.request = argv[++i];
     else if (a === '--request-file') args.requestFile = argv[++i];
     else if (a === '--out') args.out = argv[++i];
+    else if (a === '--model') args.model = argv[++i];
     else args._.push(a);
   }
   return args;
@@ -34,6 +35,15 @@ if (!request) die('Не передан запрос: используйте --re
 
 request = String(request).trim();
 if (request.length > 6000) request = request.slice(0, 6000);
+
+/* ------------------------ выбор модели ------------------------------- */
+/* --model = уже проверенная оркестратором — доверяем без повторной пробы;
+   иначе подбираем рабочую: env NEO_MODEL или упоминание из текста заявки. */
+let model = normalizeModel(args.model) || null;
+if (!model) {
+  model = pickWorkingModel(normalizeModel(process.env.NEO_MODEL) || parseModelFromText(request));
+  log(`Модель для генерации: ${model}`);
+}
 
 /* ---------------------- метапромпт для улучшения --------------------- */
 const META_PROMPT = `
@@ -77,7 +87,7 @@ ${request}
 
 /* ---------------------------- выполнение ----------------------------- */
 try {
-  const result = askDshJson(META_PROMPT, {timeoutMs: 10 * 60_000});
+  const result = askDshJson(META_PROMPT, {timeoutMs: 10 * 60_000, model});
 
   if (result.ok !== true) {
     const out = {ok: false, reason: result.reason || 'Заявка отклонена валидатором.'};
@@ -95,6 +105,7 @@ try {
     siteTitle: String(result.siteTitle).slice(0, 80),
     summary: String(result.summary || '').slice(0, 300),
     finalPrompt: String(result.finalPrompt),
+    model: model || DEFAULT_MODEL,
     rawRequest: request
   };
   if (args.out) fs.writeFileSync(args.out, JSON.stringify(out, null, 2), 'utf8');

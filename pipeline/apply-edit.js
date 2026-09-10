@@ -2,17 +2,25 @@
 /**
  * Neo Pipeline · Этап 3 — правка существующего сайта.
  *
- * Вход:  --slug имя-сайта  --instruction "что изменить"  --workdir <клон репозитория Sites>
+ * Вход:  --slug имя-сайта  --instruction "что изменить" (или --instruction-file)
+ *        --workdir <клон репозитория Sites>  --model имя-модели (опционально)
  *
  * Логика учёта:
  *   первые 8 правок бесплатны (входят в стоимость сайта),
  *   каждая следующая списывает 10 ₽ с баланса (sites.json).
+ *
+ * Модель правки: явная --model, упоминание в тексте инструкции, env NEO_MODEL,
+ * модель исходного сайта — и проверка жива ли она; при исчерпанном лимите
+ * Neo автоматически переключается на любую отвечающую модель из списка.
  */
 'use strict';
 
 const fs = require('fs');
 const path = require('path');
-const {PRICING, log, die, askDsh, readRegistry, saveRegistry, findSite, isoDay, git} = require('./lib/common');
+const {
+  PRICING, log, die, askDsh, readRegistry, saveRegistry, findSite, isoDay, git,
+  normalizeModel, parseModelFromText, pickWorkingModel, probeModel, AVAILABLE_MODELS
+} = require('./lib/common');
 
 function parseArgs(argv) {
   const args = {};
@@ -21,6 +29,7 @@ function parseArgs(argv) {
     else if (argv[i] === '--instruction') args.instruction = argv[++i];
     else if (argv[i] === '--instruction-file') args.instructionFile = argv[++i];
     else if (argv[i] === '--workdir') args.workdir = argv[++i];
+    else if (argv[i] === '--model') args.model = argv[++i];
   }
   return args;
 }
@@ -69,26 +78,46 @@ ${args.instruction}
 Когда правка внесена и файлы сохранены, ответь последней строкой ровно: EDITED ${args.slug}
 `.trim();
 
-try {
-  const answer = askDsh(EDIT_PROMPT, {timeoutMs: 20 * 60_000, workdir: repo});
+/* -------------------------- выбор модели ------------------------------- */
+let model = pickWorkingModel(
+  normalizeModel(args.model) || parseModelFromText(args.instruction) ||
+  process.env.NEO_MODEL || normalizeModel(site.model));
+log(`Правка моделью: ${model}`);
 
-  if (!fs.existsSync(indexFile)) {
-    console.error('--- ответ модели ---\n' + answer.slice(-3000));
-    die('Модель удалила index.html — правка отменена (откатите изменения в git).');
+const tried = new Set();
+let lastErr = null;
+for (;;) {
+  if (!model || tried.has(model)) break;
+  tried.add(model);
+  try {
+    const answer = askDsh(EDIT_PROMPT, {timeoutMs: 20 * 60_000, workdir: repo, model});
+
+    if (!fs.existsSync(indexFile)) {
+      console.error('--- ответ модели ---\n' + answer.slice(-3000));
+      throw new Error('Модель удалила index.html — повторяем на другой модели');
+    }
+
+    // фиксируем правку
+    site.edits = site.edits || [];
+    site.edits.push({date: isoDay(), instruction: String(args.instruction).slice(0, 500), model});
+    site.balance = (site.balance || 0) - cost;
+
+    saveRegistry(repo, reg);
+    git(repo, ['add', '-A']);
+    git(repo, ['commit', '-m',
+      `Neo: правка сайта ${args.slug}${cost ? ` (−${cost} ₽)` : ' (бесплатно)'} [skip ci]`]);
+
+    log(`Правка применена моделью ${model}. Использовано правок: ${site.edits.length}` +
+        (cost ? `, списано ${cost} ₽` : ' (в пределах включённых)'));
+    process.exit(0);
+  } catch (e) {
+    lastErr = e;
+    log(`Сбой на модели ${model}: ${String(e.message).split('\n')[0]}`);
+    if (e.message.includes('git')) break; // git-проблемы повтором на другой модели не решить
+    model = null;
+    for (const m of AVAILABLE_MODELS.filter(x => !tried.has(x))) {
+      if (probeModel(m)) { model = m; log(`Повторяю правку на модели ${m}`); break; }
+    }
   }
-
-  // фиксируем правку
-  site.edits = site.edits || [];
-  site.edits.push({date: isoDay(), instruction: String(args.instruction).slice(0, 500)});
-  site.balance = (site.balance || 0) - cost;
-
-  saveRegistry(repo, reg);
-  git(repo, ['add', '-A']);
-  git(repo, ['commit', '-m',
-    `Neo: правка сайта ${args.slug}${cost ? ` (−${cost} ₽)` : ' (бесплатно)'} [skip ci]`]);
-
-  log(`Правка применена. Использовано правок: ${site.edits.length}` +
-      (cost ? `, списано ${cost} ₽` : ' (в пределах включённых)'));
-} catch (e) {
-  die(e.message);
 }
+die(lastErr ? lastErr.message : 'Правка не удалась');

@@ -1,6 +1,9 @@
 # Настройки модели для DeepSeek Harness (используется pipeline и GitHub Actions).
-# Провайдер B.AI, модель GLM-5.3-flash. Ключ берётся из переменной окружения
-# BAI_API_KEY (локально — из credentials-сервиса DSH, в Actions — из секретов).
+# Провайдер B.AI; доступны 4 модели: GLM-5.3-flash (умолчание), Hy3,
+# Qwen3.8-Flash, Mimo-v2.5. Ключ берётся из переменной окружения BAI_API_KEY
+# (локально — из credentials-сервиса DSH, в Actions — из секретов).
+# Neo проверяет доступность выбранной модели и при исчерпанном лимите
+# автоматически переключается на другую (см. pipeline/lib/common.js → pickWorkingModel).
 agent-default-model:
   provider: bai
   model: glm-5.3-flash
@@ -14,3 +17,6 @@ llm-pi-ai:
       baseURL: https://api.b.ai/v1
       models:
         - id: glm-5.3-flash
+        - id: hy3
+        - id: qwen3.8-flash
+        - id: mimo-v2.5

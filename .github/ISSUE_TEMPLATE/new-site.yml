@@ -35,6 +35,19 @@ body:
         Тёплые цвета, уютный стиль.
     validations:
       required: true
+  - type: dropdown
+    id: model
+    attributes:
+      label: Модель генерации
+      description: >-
+        Neo проверит доступность модели перед генерацией; если лимит исчерпан —
+        автоматически переключится на другую из списка.
+      options:
+        - GLM-5.3-flash (рекомендуется)
+        - Hy3
+        - Qwen3.8-Flash
+        - Mimo-v2.5
+      default: 0
   - type: checkboxes
     id: options
     attributes:

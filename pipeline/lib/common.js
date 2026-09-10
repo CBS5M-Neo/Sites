@@ -77,22 +77,119 @@ function dshCommand(args) {
 }
 
 /**
- * Один запрос к модели через DeepSeek Harness (headless-профиль).
- * Модель по умолчанию — GLM-5.3-flash (провайдер bai, задаётся патчем/ENV).
+ * Модель по умолчанию и список моделей, из которых можно выбирать.
+ * Все они доступны у провайдера bai (api.b.ai) — см. dsh-settings.yaml.
  */
-function askDsh(prompt, {timeoutMs = 15 * 60_000, workdir} = {}) {
+const DEFAULT_MODEL = 'glm-5.3-flash';
+const AVAILABLE_MODELS = ['glm-5.3-flash', 'hy3', 'qwen3.8-flash', 'mimo-v2.5'];
+
+/** Приводит любое написание (из формы заявки, ENV и т.п.) к id модели или null. */
+function normalizeModel(raw) {
+  if (!raw) return null;
+  const s = String(raw).toLowerCase().replace(/\s+/g, '');
+  if (/^glm[-.]?5\.3/.test(s)) return 'glm-5.3-flash';
+  if (/^hy3/.test(s)) return 'hy3';
+  if (/^qwen3\.?8/.test(s)) return 'qwen3.8-flash';
+  if (/^mimo[-.]?v2\.?5?/.test(s)) return 'mimo-v2.5';
+  if (AVAILABLE_MODELS.includes(s)) return s;
+  return null;
+}
+
+/** Ищет упоминание модели в произвольном тексте (тело issue, instruction…). */
+function parseModelFromText(text) {
+  if (!text) return null;
+  const t = String(text).toLowerCase();
+  const checks = [
+    ['glm[-.]?5[.-]?3', 'glm-5.3-flash'],
+    ['\\bhy3\\b', 'hy3'],
+    ['qwen3[.-]?8', 'qwen3.8-flash'],
+    ['mimo[-.]?v2', 'mimo-v2.5']
+  ];
+  for (const [re, model] of checks) {
+    if (new RegExp(re).test(t)) return model;
+  }
+  return null;
+}
+
+/**
+ * Патч с настройками выбранной модели. Формат — как у рабочего патча лаунчера:
+ * запись id: settings с config.path на полноценный YAML (agent-default-model
+ * + определение провайдера bai). Передаётся ПОСЛЕ основного DSH_PATCH, поэтому
+ * выбранная Neo модель всегда побеждает базовые настройки.
+ */
+function modelPatchPath(model) {
+  const os = require('os');
+  const dir = path.join(os.tmpdir(), 'neo-dsh');
+  fs.mkdirSync(dir, {recursive: true});
+  const stamp = `${process.pid}-${Date.now()}`;
+  const settingsFile = path.join(dir, `settings-${stamp}.yaml`);
+  fs.writeFileSync(settingsFile, [
+    `agent-default-model:`,
+    `  provider: bai`,
+    `  model: ${model || DEFAULT_MODEL}`,
+    ``,
+    `llm-pi-ai:`,
+    `  providers:`,
+    `    bai:`,
+    `      displayName: B.AI`,
+    `      apiKeyEnv: BAI_API_KEY`,
+    `      api: openai-completions`,
+    `      baseURL: https://api.b.ai/v1`,
+    `      models:`,
+    `        - id: ${model || DEFAULT_MODEL}`
+  ].join('\n'), 'utf8');
+
+  const patchFile = path.join(dir, `patch-${stamp}.yaml`);
+  fs.writeFileSync(patchFile,
+    `- config:\n    path: ${settingsFile.replace(/\\/g, '/')}\n  id: settings\n`, 'utf8');
+  return patchFile;
+}
+
+/**
+ * Один запрос к модели через DeepSeek Harness (headless-профиль).
+ * model — одна из AVAILABLE_MODELS; по умолчанию glm-5.3-flash.
+ */
+function askDsh(prompt, {timeoutMs = 15 * 60_000, workdir, model} = {}) {
   const args = ['--profile', 'headless'];
   const patch = process.env.DSH_PATCH;
   if (patch) args.push('--patch', patch);
+  args.push('--patch', modelPatchPath(model || DEFAULT_MODEL));
   args.push(prompt);
 
-  log(`dsh headless → ${process.env.DSH_MODEL || 'glm-5.3-flash'} …`);
+  log(`dsh headless → ${model || DEFAULT_MODEL} …`);
   const {cmd, args: finalArgs} = dshCommand(args);
   const r = sh(cmd, finalArgs, {timeout: timeoutMs, cwd: workdir || process.cwd()});
   if (r.code !== 0) {
     throw new Error(`dsh exited with code ${r.code}\n${r.stderr}\n${r.stdout.slice(0, 2000)}`);
   }
   return r.stdout;
+}
+
+/** Быстрая проверка: отвечает ли модель (лимиты API у некоторых заканчиваются). */
+function probeModel(model, timeoutMs = 90_000) {
+  try {
+    const out = askDsh('Ответь ровно одним словом: OK', {timeoutMs, model});
+    return /\bOK\b/i.test(out);
+  } catch (e) {
+    log(`модель ${model} недоступна: ${String(e.message).split('\n')[0]}`);
+    return false;
+  }
+}
+
+/**
+ * Возвращает первую работающую модель: сначала предпочтительную
+ * (из заявки/env), затем остальные из списка. Бросает, если не ответила ни одна.
+ */
+function pickWorkingModel(preferred) {
+  const norm = normalizeModel(preferred || process.env.NEO_MODEL) || DEFAULT_MODEL;
+  const order = [norm, ...AVAILABLE_MODELS.filter(m => m !== norm)];
+  for (const m of order) {
+    if (probeModel(m)) {
+      if (m !== norm) log(`⚠ предпочтительная модель «${norm}» недоступна — переключаюсь на «${m}»`);
+      return m;
+    }
+  }
+  throw new Error(`Ни одна ИИ-модель не отвечает: ${order.join(', ')} — лимиты исчерпаны или нет сети. Попробуйте позже.`);
 }
 
 /**
@@ -186,8 +283,10 @@ function gh(args, opts = {}) {
 
 module.exports = {
   PRICING, RESERVED_DIRS,
+  DEFAULT_MODEL, AVAILABLE_MODELS,
   log, die, sh, git,
   askDsh, askDshJson,
+  normalizeModel, parseModelFromText, probeModel, pickWorkingModel,
   slugify, uniqueSlug,
   readRegistry, saveRegistry, findSite,
   isoDay, gh
