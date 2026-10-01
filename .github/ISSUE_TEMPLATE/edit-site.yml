@@ -12,7 +12,7 @@ body:
     id: slug
     attributes:
       label: Имя (папка) сайта
-      description: Часть ссылки после /Sites/ — например, `portfolio-fotografa`
+      description: Часть ссылки после `neo.cbs5m.top/` — например, `portfolio-fotografa`
       placeholder: portfolio-fotografa
     validations:
       required: true

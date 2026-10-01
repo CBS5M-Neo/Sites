@@ -37,7 +37,7 @@ git(repo, ['add', '-A']);
 git(repo, ['commit', '-m', `Neo: сайт ${slugArg} снова включён`]);
 try { git(repo, ['push', 'origin', 'HEAD']); } catch { git(repo, ['pull', '--rebase', 'origin']); git(repo, ['push', 'origin', 'HEAD']); }
 
-const url = `https://cbs5m-neo.github.io/Sites/${slugArg}/`;
+const url = `https://neo.cbs5m.top/${slugArg}/`;
 log('Сайт включён:', url);
 
 if (repoArg && issueArg) {

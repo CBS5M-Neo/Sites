@@ -4,20 +4,21 @@
 <meta charset="UTF-8">
 <title>Страница не найдена — Neo</title>
 <script>
-// /Sites/<slug>/… → если slug есть в реестре, редиректим на сайт, иначе в каталог
+// Работает и на старом пути (/Sites/<slug>/), и на домене в корне (/<slug>/)
 (async () => {
-  const seg = decodeURIComponent(location.pathname.split('/').filter(Boolean)[1] || '');
+  const prefix = location.pathname.startsWith('/Sites/') ? '/Sites/' : '/';
+  const seg = decodeURIComponent(location.pathname.slice(prefix.length).split('/')[0] || '');
   if (seg) {
     try {
-      const r = await fetch(location.origin + '/Sites/sites.json', {cache: 'no-store'});
+      const r = await fetch(prefix + 'sites.json', {cache: 'no-store'});
       const reg = await r.json();
       if ((reg.sites || []).some(s => s.slug === seg)) {
-        location.replace('/Sites/' + seg + '/');
+        location.replace(prefix + encodeURIComponent(seg) + '/');
         return;
       }
     } catch (e) { /* ignore */ }
   }
-  location.replace('/Sites/');
+  location.replace(prefix);
 })();
 </script>
 <style>
@@ -28,7 +29,7 @@
 <body>
 <div>
   <h1>404</h1>
-  <p>Такой страницы нет. Сейчас перенаправим вас в <a href="/Sites/">каталог сайтов Neo</a>…</p>
+  <p>Такой страницы нет. Сейчас перенаправим вас в <a href="/">каталог сайтов Neo</a>…</p>
 </div>
 </body>
 </html>

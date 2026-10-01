@@ -164,7 +164,7 @@ try {
     slug,
     name: final.siteTitle,
     description: final.summary,
-    url: `https://cbs5m-neo.github.io/Sites/${slug}/`,
+    url: `https://neo.cbs5m.top/${slug}/`,
     createdAt: isoDay(),
     status: 'active',
     model: usedModel,
@@ -188,7 +188,7 @@ try {
     git(repo, ['push', 'origin', 'HEAD']);
   }
 
-  const url = `https://cbs5m-neo.github.io/Sites/${slug}/`;
+  const url = `https://neo.cbs5m.top/${slug}/`;
   log('Сайт опубликован:', url);
   console.log('URL=' + url);
 
